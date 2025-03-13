@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Dashboard from '../views/Dashboard.vue';
+import BerandaGuest from '../views/BerandaGuest.vue';
 
 const routes = [
   {
-    path: '/',
-    name: 'DashBoard',
-    component: Dashboard
+    path: '/berandaguest',
+    name: 'BerandaGuest',
+    component: BerandaGuest
   }
 ];
 

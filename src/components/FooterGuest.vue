@@ -1,5 +1,5 @@
 <template>
-    <footer class="relative w-full pb-10 pt-10 bg-[#1E1E1E] text-white font-poppins">
+    <footer class="block w-full px-16 pb-10 pt-10 bg-[#1E1E1E] text-white font-poppins">
         <div class="container mx-auto">
             <div class="flex flex-col items-center justify-center w-full py-10 border-t border-[#979797] md:flex-row md:justify-between"></div>
             <div class="grid justify-between grid-cols-1 gap-4 md:grid-cols-2">
