@@ -64,7 +64,7 @@
                     <td class="p-4 py-5 text-center">
                         <p class="">{{item.tglselesai}}</p>
                     </td>
-                    <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-10">
+                    <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-24">
                         <p class="">{{item.status}}</p>
                     </td>
                     <td class="p-4 py-5 text-center">
