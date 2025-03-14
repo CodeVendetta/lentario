@@ -1,6 +1,6 @@
 <template>
     <div
-      class="w-full top-0 text-[#1F1F1F] font-poppins min-h-28 flex items-center justify-center"
+      class="w-full top-0 text-[#1F1F1F] font-poppins min-h-28 flex items-center justify-center mb-0"
       :style="{
         backgroundImage: `url(${bgHero})`,
         backgroundSize: 'contain',
@@ -28,7 +28,7 @@
                 </div>
                 <div class="flex gap-4">
                     <input class="text-xs min-w-[200px] border-b border-gray-300 px-4 py-2 shadow-sm text-[#101828] placeholder-[#101828] focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" placeholder="Apa Yang Kamu Butuhkan?">
-                    <button class="text-xs bg-[#0C8CE9] text-white py-2 px-2 rounded-3xl">Mulai Ajukan</button>
+                    <button class="text-xs bg-[#0C8CE9] text-white py-2 px-2 rounded-3xl hover:bg-white hover:border hover:border-[#0C8CE9] hover:text-[#0C8CE9]">Mulai Ajukan</button>
                 </div>
             </div>
         </div>
