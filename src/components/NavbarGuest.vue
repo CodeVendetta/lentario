@@ -1,5 +1,5 @@
 <template>
-    <nav class="block w-full px-16 pt-6 pb-2 text-[#1F1F1F] font-['Poppins'] bg-white">
+    <nav class="block w-full px-20 pt-6 pb-2 text-[#1F1F1F] font-['Poppins'] bg-white">
       <div class="container flex flex-wrap items-center justify-between mx-auto text-[#1F1F1F]">
         <a href="#" class="mr-4 block cursor-pointer py-1.5">
           <img src="../assets/LenTario.svg" alt="Logo" width="100">
