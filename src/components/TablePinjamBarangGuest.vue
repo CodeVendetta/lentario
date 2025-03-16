@@ -6,7 +6,7 @@
             </div>
             <div class="ml-3">
                 <div class="w-full max-w-sm min-w-[200px] relative">
-                    <button class="bg-[#0C8CE9] text-white py-2 px-6 text-xs rounded-3xl font-semibold hover:bg-[#316e99]">Tambah Data</button>
+                    <button @click="showModal = true" class="bg-[#0C8CE9] text-white py-2 px-6 text-xs rounded-3xl font-semibold hover:bg-[#316e99]">Tambah Data</button>
                 </div>
             </div>
         </div>
@@ -126,10 +126,17 @@
             </div>
         </div>
     </div>
+
+    <ModalTambahData :isOpen="showModal" @close="showModal = false" />
   </template>
   
   <script>
+  import ModalTambahData from "./ModalTambahPinjamBarang.vue";
+
   export default {
+    components: {
+        ModalTambahData,
+    },
     data() {
         function getRandomDateRange(year, month) {
         const startDay = Math.floor(Math.random() * 10) + 5; // Acak antara 5-14
@@ -142,6 +149,7 @@
     }
 
     return {
+        showModal: false,
         items: Array.from({ length: 50 }, (_, i) => {
             const { tglmulai, tglselesai } = getRandomDateRange(2025, 1);
             const statuses = ["Proses Pengembalian", "Disetujui", "Menunggu"];
