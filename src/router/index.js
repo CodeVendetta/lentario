@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import SignUpGuest from '../views/SignUpGuest.vue';
+import SignInGuest from '../views/SignInGuest.vue';
 import BerandaGuest from '../views/BerandaGuest.vue';
 import PeminjamanRuangBarangGuest from '../views/PeminjamanRuangBarangGuest.vue';
 import PeminjamanRuangGuest from '../views/PeminjamanRuangGuest.vue';
@@ -10,6 +11,11 @@ const routes = [
     path: '/signupguest',
     name: 'SignUpGuest',
     component: SignUpGuest
+  },
+  {
+    path: '/signinguest',
+    name: 'SignInGuest',
+    component: SignInGuest
   },
   {
     path: '/berandaguest',
