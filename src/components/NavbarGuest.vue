@@ -18,7 +18,7 @@
             </li>
             <li class="flex items-center p-1 gap-x-2">
               <a href="#" class="flex items-center">
-                <img src="../assets/iconprofil.svg" alt="Profile" width="25">
+                <img src="../assets/iconprofil.svg" alt="Profile" width="15">
               </a>
             </li>
           </ul>

@@ -1,10 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import SignUpGuest from '../views/SignUpGuest.vue';
 import BerandaGuest from '../views/BerandaGuest.vue';
 import PeminjamanRuangBarangGuest from '../views/PeminjamanRuangBarangGuest.vue';
 import PeminjamanRuangGuest from '../views/PeminjamanRuangGuest.vue';
 import PeminjamanBarangGuest from '../views/PeminjamanBarangGuest.vue';
 
 const routes = [
+  {
+    path: '/signupguest',
+    name: 'SignUpGuest',
+    component: SignUpGuest
+  },
   {
     path: '/berandaguest',
     name: 'BerandaGuest',
