@@ -5,6 +5,7 @@ import BerandaGuest from '../views/BerandaGuest.vue';
 import PeminjamanRuangBarangGuest from '../views/PeminjamanRuangBarangGuest.vue';
 import PeminjamanRuangGuest from '../views/PeminjamanRuangGuest.vue';
 import PeminjamanBarangGuest from '../views/PeminjamanBarangGuest.vue';
+import RekapitulasiGuest from '../views/RekapitulasiGuest.vue';
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/peminjamanbarangguest',
     name: 'PeminjamanBarangGuest',
     component: PeminjamanBarangGuest
+  },
+  {
+    path: '/rekapitulasiguest',
+    name: 'RekapitulasiGuest',
+    component: RekapitulasiGuest
   }
 ];
 
