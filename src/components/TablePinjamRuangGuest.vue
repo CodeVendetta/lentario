@@ -6,76 +6,76 @@
             </div>
             <div class="ml-3">
                 <div class="w-full max-w-sm min-w-[200px] relative">
-                    <button class="bg-[#0C8CE9] text-white py-2 px-6 text-xs rounded-3xl font-semibold hover:bg-[#316e99]">Tambah Data</button>
+                    <button @click="showModal = true" class="bg-[#0C8CE9] text-white py-2 px-6 text-xs rounded-3xl font-semibold hover:bg-[#316e99]">Tambah Data</button>
                 </div>
             </div>
         </div>
     
         <div class="relative flex flex-col w-full h-full border-none bg-white">
             <table class="w-full text-left table-auto min-w-max">
-            <thead>
-                <tr>
-                    <th class="p-4 border-b border-slate-200">
-                        <p class="text-sm font-normal leading-none text-[#787878]">
-                            No
-                        </p>
-                    </th>
-                    <th class="p-4 border-b border-slate-200">
-                        <p class="text-sm font-normal leading-none text-[#787878]">
-                            Nama Ruangan
-                        </p>
-                    </th>
-                    <th class="p-4 border-b border-slate-200">
-                        <p class="text-sm font-normal leading-none text-[#787878] text-center">
-                            Tanggal Mulai
-                        </p>
-                    </th>
-                    <th class="p-4 border-b border-slate-200 text-center">
-                        <p class="text-sm font-normal leading-none text-[#787878]">
-                            Tanggal Selesai
-                        </p>
-                    </th>
-                    <th class="p-4 border-b border-slate-200 text-center">
-                        <p class="text-sm font-normal leading-none text-[#787878]">
-                            Status
-                        </p>
-                    </th>
-                    <th class="p-4 border-b border-slate-200 text-center">
-                        <p class="text-sm font-normal leading-none text-[#787878]">
-                            Action
-                        </p>
-                    </th>
-                    <th class="p-4 border-b border-slate-200">
-                        <p></p>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
-                    <td class="p-4 py-5">
-                        <p class="block">{{item.no}}</p>
-                    </td>
-                    <td class="p-4 py-5">
-                        <p class="">{{item.ruangan}}</p>
-                    </td>
-                    <td class="p-4 py-5 text-center">
-                        <p class="">{{item.tglmulai}}</p>
-                    </td>
-                    <td class="p-4 py-5 text-center">
-                        <p class="">{{item.tglselesai}}</p>
-                    </td>
-                    <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-24">
-                        <p class="">{{item.status}}</p>
-                    </td>
-                    <td class="p-4 py-5 text-center">
-                        <button><img src="../assets/iconmata.svg" alt="" width="40"></button>
-                    </td>
-                    <td v-if="item.status === 'Disetujui'" class="p-4 py-5">
-                        <button class="bg-[#DC3545] text-white text-[8px] py-2 px-6 rounded-3xl">kembalikan</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <thead>
+                    <tr>
+                        <th class="p-4 border-b border-slate-200">
+                            <p class="text-sm font-normal leading-none text-[#787878]">
+                                No
+                            </p>
+                        </th>
+                        <th class="p-4 border-b border-slate-200">
+                            <p class="text-sm font-normal leading-none text-[#787878]">
+                                Nama Ruangan
+                            </p>
+                        </th>
+                        <th class="p-4 border-b border-slate-200">
+                            <p class="text-sm font-normal leading-none text-[#787878] text-center">
+                                Tanggal Mulai
+                            </p>
+                        </th>
+                        <th class="p-4 border-b border-slate-200 text-center">
+                            <p class="text-sm font-normal leading-none text-[#787878]">
+                                Tanggal Selesai
+                            </p>
+                        </th>
+                        <th class="p-4 border-b border-slate-200 text-center">
+                            <p class="text-sm font-normal leading-none text-[#787878]">
+                                Status
+                            </p>
+                        </th>
+                        <th class="p-4 border-b border-slate-200 text-center">
+                            <p class="text-sm font-normal leading-none text-[#787878]">
+                                Action
+                            </p>
+                        </th>
+                        <th class="p-4 border-b border-slate-200">
+                            <p></p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
+                        <td class="p-4 py-5">
+                            <p class="block">{{item.no}}</p>
+                        </td>
+                        <td class="p-4 py-5">
+                            <p class="">{{item.ruangan}}</p>
+                        </td>
+                        <td class="p-4 py-5 text-center">
+                            <p class="">{{item.tglmulai}}</p>
+                        </td>
+                        <td class="p-4 py-5 text-center">
+                            <p class="">{{item.tglselesai}}</p>
+                        </td>
+                        <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-24">
+                            <p class="">{{item.status}}</p>
+                        </td>
+                        <td class="p-4 py-5 text-center">
+                            <button><img src="../assets/iconmata.svg" alt="" width="40"></button>
+                        </td>
+                        <td v-if="item.status === 'Disetujui'" class="p-4 py-5">
+                            <button class="bg-[#DC3545] text-white text-[8px] py-2 px-6 rounded-3xl">kembalikan</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         
             <div class="flex items-center px-4 py-3 justify-center my-8">
                 <div class="flex space-x-1">
@@ -118,22 +118,30 @@
             </div>
         </div>
     </div>
+
+    <ModalTambahData :isOpen="showModal" @close="showModal = false" />
   </template>
   
   <script>
+  import ModalTambahData from "./ModalTambahPinjamRuang.vue";
+
   export default {
+    components: {
+        ModalTambahData,
+    },
     data() {
         function getRandomDateRange(year, month) {
-        const startDay = Math.floor(Math.random() * 10) + 5; // Acak antara 5-14
-        const endDay = startDay + Math.floor(Math.random() * 10) + 1; // Selalu setelah startDay
+        const startDay = Math.floor(Math.random() * 10) + 5;
+        const endDay = startDay + Math.floor(Math.random() * 10) + 1;
 
         return {
             tglmulai: `${year}-${String(month).padStart(2, '0')}-${String(startDay).padStart(2, '0')}`,
-            tglselesai: `${year}-${String(month).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`
+            tglselesai: `${year}-${String(month).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`,
         };
     }
 
     return {
+        showModal: false,
         items: Array.from({ length: 50 }, (_, i) => {
             const { tglmulai, tglselesai } = getRandomDateRange(2025, 1);
             const statuses = ["Proses Pengembalian", "Disetujui", "Menunggu"];
@@ -179,6 +187,7 @@
         return pages;
       }
     },
+
     methods: {
       changePage(page) {
         this.currentPage = page;
