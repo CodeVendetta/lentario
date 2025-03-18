@@ -8,6 +8,8 @@ import PeminjamanBarangGuest from '../views/PeminjamanBarangGuest.vue';
 import RekapitulasiGuest from '../views/RekapitulasiGuest.vue';
 import TentangKamiGuest from '../views/TentangKamiGuest.vue';
 
+import DashboardAdmin from '../views/DashboardAdmin.vue';
+
 const routes = [
   {
     path: '/signupguest',
@@ -48,6 +50,11 @@ const routes = [
     path: '/tentangkamiguest',
     name: 'TentangKamiGuest',
     component: TentangKamiGuest
+  },
+  {
+    path: '/dashboardadmin',
+    name: 'DashboardAdmin',
+    component: DashboardAdmin
   }
 ];
 
