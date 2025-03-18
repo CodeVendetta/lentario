@@ -6,7 +6,7 @@
             </div>
             <div class="ml-3">
                 <div class="w-full max-w-sm min-w-[200px] relative">
-                    <button @click="showModal = true" class="bg-[#0C8CE9] text-white py-2 px-6 text-xs rounded-3xl font-semibold hover:bg-[#316e99]">Tambah Data</button>
+                    <button @click="showModalTambah = true" class="bg-[#0C8CE9] text-white py-2 px-6 text-xs rounded-3xl font-semibold hover:bg-[#316e99]">Tambah Data</button>
                 </div>
             </div>
         </div>
@@ -76,7 +76,7 @@
                         <p class="">{{item.status}}</p>
                     </td>
                     <td class="p-4 py-5 text-center">
-                        <button><img src="../assets/iconmata.svg" alt="" width="40"></button>
+                        <button @click="openDetailModal(item)"><img src="../assets/iconmata.svg" alt="" width="40"></button>
                     </td>
                     <td v-if="item.status === 'Disetujui'" class="p-4 py-5">
                         <button class="bg-[#DC3545] text-white text-[8px] py-2 px-6 rounded-3xl">kembalikan</button>
@@ -127,15 +127,18 @@
         </div>
     </div>
 
-    <ModalTambahData :isOpen="showModal" @close="showModal = false" />
+    <ModalTambahData :isOpen="showModalTambah" @close="showModalTambah = false" />
+    <ModalDetailPinjamBarang :isOpen="showModalDetail" :item="selectedItem" @close="showModalDetail = false" />
   </template>
   
   <script>
   import ModalTambahData from "./ModalTambahPinjamBarang.vue";
+  import ModalDetailPinjamBarang from "./ModalDetailPinjamBarang.vue";
 
   export default {
     components: {
         ModalTambahData,
+        ModalDetailPinjamBarang
     },
     data() {
         function getRandomDateRange(year, month) {
@@ -149,7 +152,8 @@
     }
 
     return {
-        showModal: false,
+        showModalTambah: false,
+        showModalDetail: false,
         items: Array.from({ length: 50 }, (_, i) => {
             const { tglmulai, tglselesai } = getRandomDateRange(2025, 1);
             const statuses = ["Proses Pengembalian", "Disetujui", "Menunggu"];
@@ -198,15 +202,19 @@
       }
     },
     methods: {
-      changePage(page) {
-        this.currentPage = page;
-      },
-      prevPage() {
-        if (this.currentPage > 1) this.currentPage--;
-      },
-      nextPage() {
-        if (this.currentPage < this.totalPages) this.currentPage++;
-      }
+        openDetailModal(item) {
+            this.selectedItem = item;
+            this.showModalDetail = true;
+        },
+        changePage(page) {
+            this.currentPage = page;
+        },
+        prevPage() {
+            if (this.currentPage > 1) this.currentPage--;
+        },
+        nextPage() {
+            if (this.currentPage < this.totalPages) this.currentPage++;
+        }
     }
   };
   </script>

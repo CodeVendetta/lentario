@@ -17,7 +17,7 @@
                 </a>
             </li>
             <li class="flex items-center p-1 gap-x-2">
-              <a href="#" class="flex items-center">
+              <a @click.prevent="showModal = true" class="flex items-center cursor-pointer">
                 <img src="../assets/iconprofil.svg" alt="Profile" width="15">
               </a>
             </li>
@@ -34,11 +34,18 @@
         </button>
       </div>
     </nav>
+
+    <ModalProfil :isOpen="showModal" @close="showModal = false" />
   </template>
   
   <script>
+  import ModalProfil from "./ModalProfilGuest.vue";
+
   export default {
     name: 'NavbarGuest',
+    components: {
+      ModalProfil,
+    },
     props: {
       activePage: {
         type: String,
@@ -47,6 +54,7 @@
     },
     data() {
       return {
+        showModal: false,
         menuItems: [
           { name: "Beranda", link: "#" },
           { name: "Peminjaman ruang & barang", link: "#" },
