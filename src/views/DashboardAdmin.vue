@@ -1,5 +1,7 @@
 <template>
-    <SidebarAdmin activePage="Dashboard" />
+    <SidebarAdmin activePage="Dashboard">
+        
+    </SidebarAdmin>
   </template>
     
   <script>

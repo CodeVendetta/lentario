@@ -37,11 +37,14 @@
       </div>
     </aside>
 
-    <main class="flex-1 p-6 bg-gray-100">
+    <main class="flex-1 bg-[#F5F7FA]">
+      <nav class="w-full bg-white h-16">
+        <h1 class="p-5 font-semibold text-[#1E1E1E] text-xl">Admin</h1>
+      </nav>
       <slot></slot>
     </main>
   </div>
-  
+
 </template>
 
 <script>
