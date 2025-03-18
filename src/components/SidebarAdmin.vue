@@ -1,8 +1,8 @@
 <template>
-  <div class="flex h-screen font-poppins">
-    <aside class="bg-white shadow-md py-4">
+  <div class="flex h-full font-poppins">
+    <aside class="bg-white shadow-xl py-4 z-10">
       <div class="flex flex-col h-full items-center">
-        <a href="#" class="mb-6 mt-2 mx-10">
+        <a href="#" class="mb-10 mt-2 mx-10">
           <img src="../assets/LenTario.svg" alt="Logo" width="100" />
         </a>
 
@@ -10,7 +10,7 @@
           <li
             v-for="item in menuItems"
             :key="item.name"
-            class="relative flex items-center py-2 text-sm transition-all group px-10"
+            class="relative flex items-center py-2 text-sm transition-all group px-8"
             :class="{
               'text-[#0C8CE9]': activePage === item.name,
               'text-[#B1B1B1]': activePage !== item.name,
@@ -36,15 +36,14 @@
         </ul>
       </div>
     </aside>
-
+    
     <main class="flex-1 bg-[#F5F7FA]">
-      <nav class="w-full bg-white h-16">
+      <nav class="w-full bg-white h-16 z-20 relative top-0">
         <h1 class="p-5 font-semibold text-[#1E1E1E] text-xl">Admin</h1>
       </nav>
       <slot></slot>
     </main>
   </div>
-
 </template>
 
 <script>
