@@ -9,6 +9,7 @@ import RekapitulasiGuest from '../views/RekapitulasiGuest.vue';
 import TentangKamiGuest from '../views/TentangKamiGuest.vue';
 
 import DashboardAdmin from '../views/DashboardAdmin.vue';
+import TambahDataAdmin from '../views/TambahDataAdmin.vue';
 
 const routes = [
   {
@@ -55,6 +56,11 @@ const routes = [
     path: '/dashboardadmin',
     name: 'DashboardAdmin',
     component: DashboardAdmin
+  },
+  {
+    path: '/tambahdataadmin',
+    name: 'TambahDataAdmin',
+    component: TambahDataAdmin
   }
 ];
 
