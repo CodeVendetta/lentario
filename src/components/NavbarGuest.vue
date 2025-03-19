@@ -16,10 +16,8 @@
                 </span>
                 </a>
             </li>
-            <li class="flex items-center p-1 gap-x-2">
-              <a @click.prevent="showModal = true" class="flex items-center cursor-pointer">
-                <img src="../assets/iconprofil.svg" alt="Profile" width="15">
-              </a>
+            <li class="flex items-center p-1 gap-x-2 pl-10">
+              <button @click.prevent="showModal = true" class="text-xs text-white bg-[#0C8CE9] rounded-2xl py-2 px-4">Profile</button>
             </li>
           </ul>
         </div>
