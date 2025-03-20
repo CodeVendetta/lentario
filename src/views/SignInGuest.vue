@@ -14,7 +14,7 @@
     import FormSignIn from '@/components/FormSignIn.vue'
   
     export default {
-      name: 'SignUpGuest',
+      name: 'SignInGuest',
       components: { 
         ImageSlider,
         FormSignIn

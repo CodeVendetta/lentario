@@ -54,10 +54,10 @@
       return {
         showModal: false,
         menuItems: [
-          { name: "Beranda", link: "#" },
-          { name: "Peminjaman ruang & barang", link: "#" },
-          { name: "Rekapitulasi", link: "#" },
-          { name: "Tentang Kami", link: "#" }
+          { name: "Beranda", link: "/berandaguest" },
+          { name: "Peminjaman ruang & barang", link: "/peminjamanruangbarangguest" },
+          { name: "Rekapitulasi", link: "/rekapitulasiguest" },
+          { name: "Tentang Kami", link: "tentangkamiguest" }
         ]
       };
     }
