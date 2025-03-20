@@ -8,12 +8,19 @@
   
         <div class="mt-4 flex flex-col gap-1 text-[#1E1E1E]">
           <label class="text-xs">Nama Barang</label>
-          <select v-model="roomName" class="w-full border border-gray-300 px-4 py-3 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="" disabled>Pilih barang</option>
-            <option value="Barang A">Barang A</option>
-            <option value="Barang B">Barang B</option>
-            <option value="Barang C">Barang C</option>
-          </select>
+          <div class="relative">
+            <select v-model="roomName" class="w-full border border-gray-300 px-4 py-3 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none pr-10">
+              <option value="" disabled>Pilih barang</option>
+              <option value="Barang A">Barang A</option>
+              <option value="Barang B">Barang B</option>
+              <option value="Barang C">Barang C</option>
+            </select>
+            <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+          </div>
         </div>
   
         <div class="mt-4 flex flex-col gap-1 text-[#1E1E1E]">
