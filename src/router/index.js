@@ -10,6 +10,7 @@ import TentangKamiGuest from '../views/TentangKamiGuest.vue';
 
 import DashboardAdmin from '../views/DashboardAdmin.vue';
 import TambahDataAdmin from '../views/TambahDataAdmin.vue';
+import PersetujuanAdmin from '../views/PersetujuanAdmin.vue';
 
 const routes = [
   {
@@ -61,6 +62,11 @@ const routes = [
     path: '/tambahdataadmin',
     name: 'TambahDataAdmin',
     component: TambahDataAdmin
+  },
+  {
+    path: '/persetujuanadmin',
+    name: 'PersetujuanAdmin',
+    component: PersetujuanAdmin
   }
 ];
 
