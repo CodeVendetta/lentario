@@ -1,6 +1,6 @@
 <template>
     <div
-      class="w-full top-0 text-[#1F1F1F] font-poppins min-h-28 flex items-center justify-center mb-[-20px]"
+      class="min-w-full overflow-hidden top-0 text-[#1F1F1F] font-poppins min-h-28 flex items-center justify-center mb-[-20px]"
       :style="{
         backgroundImage: `url(${bgHero})`,
         backgroundSize: 'contain',

@@ -13,7 +13,7 @@
       </div>
       <div class="w-full bg-white mt-2 px-8 rounded-md">
         <h1 class="text-[#101828] font-semibold text-xl pt-6 pb-2">
-          Mari cari ruangan & barang terbaik untuk anda
+          Mari Cari Ruangan & Barang Terbaik untuk Anda
         </h1>
         <div class="w-full flex py-8 gap-14">
           <div class="flex gap-3">
@@ -28,7 +28,7 @@
             <input
               class="text-xs min-w-[200px] border-b border-gray-300 px-4 py-2 shadow-sm text-[#101828] placeholder-[#101828] focus:outline-none focus:ring-2 focus:ring-blue-500"
               type="text"
-              placeholder="Apa Yang Kamu Butuhkan?"
+              placeholder="Apa yang Kamu Butuhkan?"
             />
             <button
               class="text-xs bg-[#0C8CE9] text-white py-2 px-2 rounded-3xl hover:bg-white hover:border hover:border-[#0C8CE9] hover:text-[#0C8CE9]"

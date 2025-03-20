@@ -7,8 +7,8 @@
         </div>
 
         <div class="absolute inset-0 flex flex-col items-center justify-center z-10 px-24 text-center gap-5">
-            <h1 class="text-white text-3xl font-bold leading-snug">Ada event? bingung izinnya kemana?</h1>
-            <p class="text-white text-sm">Lentario adala solusi dari kamu yang membutukan ruagan untuk event</p>
+            <h1 class="text-white text-3xl font-bold leading-snug">Ada event? Bingung izinnya kemana?</h1>
+            <p class="text-white text-sm">Lentario adalah solusi dari kamu yang membutukan ruagan untuk event</p>
         </div>
 
         <div class="absolute bottom-5 left-1/2 -translate-x-1/2 flex space-x-2">
