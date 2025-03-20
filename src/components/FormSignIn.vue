@@ -57,7 +57,7 @@ const handleLogin = async () => {
     if (response.ok) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.user['role']);
-      localStorage.setItem('user', data.user['nama']);
+      localStorage.setItem('user', {'nama':data.user['nama'],'nim':data.user['nama'],'prodi':data.user['prodi'],'email':data.user['email']});
       
       if (data.role === 'user') {
         router.push('/berandaguest');

@@ -48,7 +48,7 @@
                             <p class="block">{{ index + 1 + (currentPage - 1) * perPage }}</p>
                         </td>
                         <td class="p-4 py-5">
-                            <p class="">{{user}}</p>
+                            <p class="">{{user['nama']}}</p>
                         </td>
                         <td class="p-4 py-5">
                             <p class="">{{item.barang['nama']}}</p>
