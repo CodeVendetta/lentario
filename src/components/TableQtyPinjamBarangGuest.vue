@@ -17,7 +17,7 @@
                         </th>
                         <th class="p-4 border-b border-slate-200">
                             <p class="text-sm font-normal leading-none text-[#787878]">
-                                Nama Barang
+                                Nama Ruangan
                             </p>
                         </th>
                         <th class="p-4 border-b border-slate-200">

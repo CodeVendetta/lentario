@@ -9,13 +9,21 @@
             <img src="../assets/imgruang.svg" alt="" width="180" class="rounded-t-xl">
             <p class="absolute top-3 left-3 text-[8px] text-white bg-[#0C8CE9] py-1 px-2 rounded-md font-semibold z-10">Peminjaman</p>
             <p class="text-[10px] font-semibold pt-3 pb-5">Peminjaman Ruangan</p>
-            <button class="text-[10px] text-white bg-[#0C8CE9] px-8 py-2 rounded-md font-semibold hover:bg-[#0863a4]">Mulai Peminjaman</button>
+            <router-link to="/peminjamanruangguest">
+              <button class="text-[10px] text-white bg-[#0C8CE9] px-8 py-2 rounded-md font-semibold hover:bg-[#0863a4]">
+                Mulai Peminjaman
+              </button>
+            </router-link>
         </div>
         <div class="bg-white text-center pb-4 rounded-xl relative">
             <img src="../assets/imgbarang.svg" alt="" width="180" class="rounded-t-xl">
             <p class="absolute top-3 left-3 text-[8px] text-white bg-[#0C8CE9] py-1 px-2 rounded-md font-semibold z-10">Peminjaman</p>
             <p class="text-[10px] font-semibold pt-3 pb-5">Peminjaman Barang</p>
-            <button class="text-[10px] text-white bg-[#0C8CE9] px-8 py-2 rounded-md font-semibold hover:bg-[#0863a4]">Mulai Peminjaman</button>
+            <router-link to="/peminjamanbarangguest">
+              <button class="text-[10px] text-white bg-[#0C8CE9] px-8 py-2 rounded-md font-semibold hover:bg-[#0863a4]">
+                Mulai Peminjaman
+              </button>
+            </router-link>
         </div>
         <div class="bg-white text-center pb-4 rounded-xl relative">
             <img src="../assets/imgruang.svg" alt="" width="180" class="rounded-t-xl">

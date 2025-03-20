@@ -40,19 +40,19 @@
                 <tbody>
                     <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
                         <td class="p-4 py-5">
-                            <p class="block">{{item.no}}</p>
+                            <p class="block">{{item.id}}</p>
                         </td>
                         <td class="p-4 py-5">
-                            <p class="">{{item.namapeminjam}}</p>
+                            <p class="">{{user}}</p>
                         </td>
                         <td class="p-4 py-5">
-                            <p class="">{{item.ruangan}}</p>
+                            <p class="">{{item.ruang['nama']}}</p>
                         </td>
                         <td class="p-4 py-5 text-center">
-                            <p class="">{{item.tglmulai}}</p>
+                            <p>{{ new Date(item.tgl_mulai).toISOString().split('T')[0] }}</p>
                         </td>
                         <td class="p-4 py-5 text-center">
-                            <p class="">{{item.tglselesai}}</p>
+                            <p>{{ new Date(item.tgl_selesai).toISOString().split('T')[0] }}</p>
                         </td>
                     </tr>
                 </tbody>
@@ -102,75 +102,82 @@
   </template>
   
   <script>
+  import axios from 'axios';
+  
   export default {
-    data() {
-        function getRandomDateRange(year, month) {
-        const startDay = Math.floor(Math.random() * 10) + 5;
-        const endDay = startDay + Math.floor(Math.random() * 10) + 1;
-
-        return {
-            tglmulai: `${year}-${String(month).padStart(2, '0')}-${String(startDay).padStart(2, '0')}`,
-            tglselesai: `${year}-${String(month).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`,
-        };
-    }
-
-    return {
-        showModal: false,
-        items: Array.from({ length: 50 }, (_, i) => {
-            const { tglmulai, tglselesai } = getRandomDateRange(2025, 1);
-            return {
-                no: i + 1,
-                namapeminjam: `Peminjam ${i + 1}`,
-                ruangan: `Ruangan ${i + 1}`,
-                tglmulai,
-                tglselesai
-            };
-        }),
-        currentPage: 1,
-        perPage: 5
-    };
-
-    },
-    computed: {
-      totalPages() {
-        return Math.ceil(this.items.length / this.perPage);
+      data() {
+          return {
+              items: [],
+              currentPage: 1,
+              perPage: 5,
+              user: localStorage.getItem('user')
+          };
       },
-      paginatedData() {
-        const start = (this.currentPage - 1) * this.perPage;
-        return this.items.slice(start, start + this.perPage);
+      computed: {
+          totalPages() {
+              return Math.ceil(this.items.length / this.perPage);
+          },
+          paginatedData() {
+              const start = (this.currentPage - 1) * this.perPage;
+              return this.items.slice(start, start + this.perPage);
+          },
+          visiblePages() {
+              const total = this.totalPages;
+              const current = this.currentPage;
+              let pages = [];
+              if (total <= 5) {
+                  pages = Array.from({ length: total }, (_, i) => i + 1);
+              } else if (current <= 3) {
+                  pages = [1, 2, 3, 4, 5, "...", total];
+              } else if (current >= total - 2) {
+                  pages = [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+              } else {
+                  pages = [1, "...", current - 1, current, current + 1, "...", total];
+              }
+              return pages;
+          }
       },
-      visiblePages() {
-        const total = this.totalPages;
-        const current = this.currentPage;
-        let pages = [];
-        
-        if (total <= 5) {
-          return Array.from({ length: total }, (_, i) => i + 1);
-        }
-        
-        if (current <= 3) {
-          pages = [1, 2, 3, 4, 5];
-        } else if (current >= total - 2) {
-          pages = [total - 4, total - 3, total - 2, total - 1, total];
-        } else {
-          pages = [current - 2, current - 1, current, current + 1, current + 2];
-        }
-        
-        return pages;
+      methods: {
+          async fetchData() {
+              try {
+                  const token = localStorage.getItem("token");
+                  if (!token) {
+                      console.error("Token tidak ditemukan!");
+                      return;
+                  }
+  
+                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/user/rekapitulasi/ruang", {
+                      headers: {
+                          "Authorization": `Bearer ${token}`,
+                          "Content-Type": "application/json"
+                      }
+                  });
+  
+                  console.log("Response dari API:", response.data);
+  
+                  if (response.status === 200) {
+                      this.items = Array.isArray(response.data) ? response.data : response.data.data || [];
+                  } else {
+                      console.error("Gagal mendapatkan data, status:", response.status);
+                  }
+              } catch (error) {
+                  console.error("Error fetching data:", error.response ? error.response.data : error.message);
+              }
+          },
+          changePage(page) {
+              if (page !== "...") {
+                  this.currentPage = page;
+              }
+          },
+          prevPage() {
+              if (this.currentPage > 1) this.currentPage--;
+          },
+          nextPage() {
+              if (this.currentPage < this.totalPages) this.currentPage++;
+          }
+      },
+      mounted() {
+          this.fetchData();
       }
-    },
-
-    methods: {
-      changePage(page) {
-        this.currentPage = page;
-      },
-      prevPage() {
-        if (this.currentPage > 1) this.currentPage--;
-      },
-      nextPage() {
-        if (this.currentPage < this.totalPages) this.currentPage++;
-      }
-    }
   };
   </script>
-  
