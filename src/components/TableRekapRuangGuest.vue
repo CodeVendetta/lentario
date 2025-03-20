@@ -38,12 +38,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
+                    <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
                         <td class="p-4 py-5">
                             <p class="block">{{ index + 1 + (currentPage - 1) * perPage }}</p>
                         </td>
                         <td class="p-4 py-5">
-                            <p class="">{{user['nama']}}</p>
+                            <p class="">{{user.nama}}</p>
                         </td>
                         <td class="p-4 py-5">
                             <p class="">{{item.ruang['nama']}}</p>
@@ -110,7 +110,7 @@
               items: [],
               currentPage: 1,
               perPage: 5,
-              user: localStorage.getItem('user')
+              user: JSON.parse(localStorage.getItem('user'))
           };
       },
       computed: {
