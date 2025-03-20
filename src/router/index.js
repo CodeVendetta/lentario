@@ -42,7 +42,6 @@ const routes = [
   { path: '/logout', name: 'Logout', beforeEnter: (to, from, next) => {
       localStorage.removeItem('token');
       localStorage.removeItem('role');
-      alert('Anda telah berhasil logout!');
       next('/signinguest');
   }}
 ];

@@ -58,7 +58,6 @@ const handleLogin = async () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.user['role']);
       localStorage.setItem('user', data.user['nama']);
-      alert('Login Berhasil!');
       
       if (data.role === 'user') {
         router.push('/berandaguest');
