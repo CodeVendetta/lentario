@@ -3,12 +3,12 @@
         <div class="flex bg-white px-6 py-5 items-center gap-5 rounded-md">
             <img class="bg-[#0C8CE9] p-3 rounded-full" src="../assets/iconruangberanda.svg" alt="" width="60">
             <p class="text-[#1E1E1E] font-semibold">Peminjaman Ruang</p>
-            <a href=""><img src="../assets/iconnext.svg" alt="" width="30"></a>
+            <a href="/peminjamanruangguest"><img src="../assets/iconnext.svg" alt="" width="30"></a>
         </div>
         <div class="flex bg-white px-6 py-5 items-center gap-5 rounded-md">
             <img class="bg-[#0C8CE9] p-3 rounded-full" src="../assets/iconbarangberanda.svg" alt="" width="60">
             <p class="text-[#1E1E1E] font-semibold">Peminjaman Barang</p>
-            <a href=""><img src="../assets/iconnext.svg" alt="" width="30"></a>
+            <a href="/peminjamanbarangguest"><img src="../assets/iconnext.svg" alt="" width="30"></a>
         </div>
     </div>
   </template>
