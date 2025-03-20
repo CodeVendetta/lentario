@@ -1,8 +1,8 @@
 <template>
-    <div class="relative w-full font-poppins justify-center bg-white px-20 pt-10">
+    <div id="tbldataruang" class="relative w-full font-poppins justify-center bg-white px-20 pt-10">
         <div class="w-full flex justify-center items-center mb-4 mt-1 pl-3">
             <div>
-                <h3 class="text-lg font-semibold text-[#0C8CE9]">Data Pinjam Ruang</h3>
+                <h3 class="text-lg font-semibold text-[#0C8CE9]">Data Ruang</h3>
             </div>
         </div>
 
