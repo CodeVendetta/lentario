@@ -39,7 +39,7 @@ const routes = [
   { path: '/tambahdataadmin', name: 'TambahDataAdmin', component: TambahDataAdmin, meta: { requiresAuth: true, role: 'admin' } },
   { path: '/persetujuanadmin', name: 'PersetujuanAdmin', component: PersetujuanAdmin, meta: { requiresAuth: true, role: 'admin' } },
 
-  { path: '/logout', name: 'Logout', beforeEnter: (to, from, next) => {
+  { path: '/signout', name: 'SignOut', beforeEnter: (to, from, next) => {
       localStorage.removeItem('token');
       localStorage.removeItem('role');
       next('/signinguest');
