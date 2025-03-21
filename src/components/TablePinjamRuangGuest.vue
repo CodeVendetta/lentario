@@ -67,7 +67,9 @@
                             <p class="">{{item.status_peminjaman['nama']}}</p>
                         </td>
                         <td v-if="item.status_peminjaman['nama'] === 'Disetujui'" class="p-4 py-5 text-center">
-                            <button class="bg-[#DC3545] text-white text-[8px] py-2 px-6 rounded-3xl">kembalikan</button>
+                            <button @click="returnRoom(item.id)" class="bg-[#DC3545] text-white text-[8px] py-2 px-6 rounded-3xl hover:bg-red-700">
+                                Kembalikan
+                            </button>
                         </td>
                     </tr>
                 </tbody>
@@ -188,6 +190,30 @@
                 }
             } catch (error) {
                 console.error("Error fetching data:", error.response ? error.response.data : error.message);
+            }
+        },
+        async returnRoom(id) {
+            if (!confirm("Apakah Anda yakin ingin mengembalikan ruangan ini?")) {
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem("token");
+                await axios.put(
+                    `https://laravel-production-ea67.up.railway.app/api/user/pinjam-ruang/${id}/request-return`,
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+
+                alert("Peminjaman berhasil dikembalikan!");
+                location.reload();
+            } catch (error) {
+                alert("Gagal mengembalikan ruangan. Silakan coba lagi.");
+                console.error("Error:", error);
             }
         },
         changePage(page) {
