@@ -7,7 +7,7 @@
         </div>
   
         <div class="mt-4 flex flex-col gap-1 text-[#1E1E1E]">
-          <label class="text-xs">Nama Barang</label>
+          <label class="text-xs">Nama Ruang</label>
           <input v-model="roomName" type="text" placeholder="Masukkan nama ruangan" class="w-full border border-gray-300 px-4 py-3 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
