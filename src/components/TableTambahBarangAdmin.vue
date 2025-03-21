@@ -43,19 +43,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
-                        <td class="p-4 py-5">
-                            <p class="block">{{item.no}}</p>
-                        </td>
-                        <td class="p-4 py-5">
-                            <p class="">{{item.barang}}</p>
-                        </td>
-                        <td class="p-4 py-5 text-center">
-                            <p class="">{{item.jumlah}}</p>
-                        </td>
-                        <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-24">
-                            <p class="">{{item.status}}</p>
-                        </td>
+                    <tr v-for="(barang, index) in paginatedData" :key="barang.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
+                        <td class="p-4 py-5">{{ index + 1 }}</td>
+                        <td class="p-4 py-5">{{ barang.nama }}</td>
+                        <td class="p-4 py-5 text-center">{{ barang.stok }}</td>
+                        <td class="p-4 py-5 text-center text-[#0C8CE9]">{{ barang.status_barang?.nama || 'Tidak diketahui' }}</td>
                         <td class="p-4 py-5 text-center">
                             <button><img src="../assets/iconmata.svg" alt="" width="40"></button>
                         </td>
@@ -110,77 +102,100 @@
   </template>
   
   <script>
+  import axios from "axios";
   import ModalTambahData from "./ModalTambahBarangAdmin.vue";
   import ModalDetailPinjamBarang from "./ModalDetailPinjamBarang.vue";
 
   export default {
-    components: {
-        ModalTambahData,
-        ModalDetailPinjamBarang
-    },
-    data() {
-    return {
-        showModalTambah: false,
-        showModalDetail: false,
-        items: Array.from({ length: 50 }, (_, i) => {
-            const statuses = ["Kosong","Tersedia"];
-            const status = statuses[Math.floor(Math.random() * statuses.length)];
-            const jumlah = Math.floor(Math.random() * 3) + 1;
-            return {
-                no: i + 1,
-                barang: `Barang ${i + 1}`,
-                jumlah,
-                status
-            };
-        }),
-        currentPage: 1,
-        perPage: 5
-    };
-
-    },
-    computed: {
-      totalPages() {
-        return Math.ceil(this.items.length / this.perPage);
+      components: {
+          ModalTambahData,
+          ModalDetailPinjamBarang
       },
-      paginatedData() {
-        const start = (this.currentPage - 1) * this.perPage;
-        return this.items.slice(start, start + this.perPage);
+      data() {
+          return {
+              showModalTambah: false,
+              showModalDetail: false,
+              barangs: [],
+              currentPage: 1,
+              perPage: 5
+          };
       },
-      visiblePages() {
-        const total = this.totalPages;
-        const current = this.currentPage;
-        let pages = [];
-        
-        if (total <= 5) {
-          return Array.from({ length: total }, (_, i) => i + 1);
-        }
-        
-        if (current <= 3) {
-          pages = [1, 2, 3, 4, 5];
-        } else if (current >= total - 2) {
-          pages = [total - 4, total - 3, total - 2, total - 1, total];
-        } else {
-          pages = [current - 2, current - 1, current, current + 1, current + 2];
-        }
-        
-        return pages;
+      computed: {
+          totalPages() {
+              return Math.ceil(this.barangs.length / this.perPage);
+          },
+          paginatedData() {
+              const start = (this.currentPage - 1) * this.perPage;
+              return this.barangs.slice(start, start + this.perPage);
+          },
+          visiblePages() {
+              const total = this.totalPages;
+              const current = this.currentPage;
+              let pages = [];
+  
+              if (total <= 5) {
+                  return Array.from({ length: total }, (_, i) => i + 1);
+              }
+  
+              if (current <= 3) {
+                  pages = [1, 2, 3, 4, 5];
+              } else if (current >= total - 2) {
+                  pages = [total - 4, total - 3, total - 2, total - 1, total];
+              } else {
+                  pages = [current - 2, current - 1, current, current + 1, current + 2];
+              }
+  
+              return pages;
+          }
+      },
+      methods: {
+          async fetchData() {
+              try {
+                  const token = localStorage.getItem("token");
+  
+                  if (!token) {
+                      console.error("Token tidak ditemukan. Silakan login.");
+                      return;
+                  }
+  
+                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/admin/barang", {
+                      headers: {
+                          Authorization: `Bearer ${token}`,
+                          Accept: "application/json",
+                      },
+                  });
+  
+                  if (response.data && response.data.data) {
+                      this.barangs = response.data.data;
+                      console.log("Data barangs berhasil diambil:", this.barangs);
+                  } else {
+                      console.error("Format respons API tidak sesuai:", response.data);
+                  }
+              } catch (error) {
+                  console.error("Gagal mengambil data:", error);
+  
+                  if (error.response) {
+                      console.error("Respons API:", error.response.data);
+                  }
+  
+                  if (error.response && error.response.status === 401) {
+                      console.error("Token tidak valid atau kadaluarsa. Silakan login kembali.");
+                  }
+              }
+          },
+          changePage(page) {
+              this.currentPage = page;
+          },
+          prevPage() {
+              if (this.currentPage > 1) this.currentPage--;
+          },
+          nextPage() {
+              if (this.currentPage < this.totalPages) this.currentPage++;
+          }
+      },
+      mounted() {
+          this.fetchData();
       }
-    },
-    methods: {
-        openDetailModal(item) {
-            this.selectedItem = item;
-            this.showModalDetail = true;
-        },
-        changePage(page) {
-            this.currentPage = page;
-        },
-        prevPage() {
-            if (this.currentPage > 1) this.currentPage--;
-        },
-        nextPage() {
-            if (this.currentPage < this.totalPages) this.currentPage++;
-        }
-    }
   };
   </script>
   

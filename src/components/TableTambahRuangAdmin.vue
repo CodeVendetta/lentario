@@ -38,16 +38,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
-                        <td class="p-4 py-5">
-                            <p class="block">{{item.no}}</p>
-                        </td>
-                        <td class="p-4 py-5">
-                            <p class="">{{item.ruangan}}</p>
-                        </td>
-                        <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-24">
-                            <p class="">{{item.status}}</p>
-                        </td>
+                    <tr v-for="(ruang, index) in paginatedData" :key="ruang.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
+                        <td class="p-4 py-5">{{ index + 1 }}</td>
+                        <td class="p-4 py-5">{{ ruang.nama }}</td>
+                        <td class="p-4 py-5 text-center text-[#0C8CE9]">{{ ruang.status_ruang?.nama || 'Tidak diketahui' }}</td>
                         <td class="p-4 py-5 text-center">
                             <button><img src="../assets/iconmata.svg" alt="" width="40"></button>
                         </td>
@@ -102,75 +96,100 @@
   </template>
   
   <script>
+  import axios from "axios";
   import ModalTambahData from "./ModalTambahRuangAdmin.vue";
   import ModalDetailPinjamBarang from "./ModalDetailPinjamBarang.vue";
-
+  
   export default {
-    components: {
-        ModalTambahData,
-        ModalDetailPinjamBarang
-    },
-    data() {
-    return {
-        showModalTambah: false,
-        showModalDetail: false,
-        items: Array.from({ length: 50 }, (_, i) => {
-            const statuses = ["Kosong","Tersedia"];
-            const status = statuses[Math.floor(Math.random() * statuses.length)];
-            return {
-                no: i + 1,
-                ruangan: `Ruangan ${i + 1}`,
-                status
-            };
-        }),
-        currentPage: 1,
-        perPage: 5
-    };
-
-    },
-    computed: {
-      totalPages() {
-        return Math.ceil(this.items.length / this.perPage);
+      components: {
+          ModalTambahData,
+          ModalDetailPinjamBarang
       },
-      paginatedData() {
-        const start = (this.currentPage - 1) * this.perPage;
-        return this.items.slice(start, start + this.perPage);
+      data() {
+          return {
+              showModalTambah: false,
+              showModalDetail: false,
+              ruangans: [],
+              currentPage: 1,
+              perPage: 5
+          };
       },
-      visiblePages() {
-        const total = this.totalPages;
-        const current = this.currentPage;
-        let pages = [];
-        
-        if (total <= 5) {
-          return Array.from({ length: total }, (_, i) => i + 1);
-        }
-        
-        if (current <= 3) {
-          pages = [1, 2, 3, 4, 5];
-        } else if (current >= total - 2) {
-          pages = [total - 4, total - 3, total - 2, total - 1, total];
-        } else {
-          pages = [current - 2, current - 1, current, current + 1, current + 2];
-        }
-        
-        return pages;
+      computed: {
+          totalPages() {
+              return Math.ceil(this.ruangans.length / this.perPage);
+          },
+          paginatedData() {
+              const start = (this.currentPage - 1) * this.perPage;
+              return this.ruangans.slice(start, start + this.perPage);
+          },
+          visiblePages() {
+              const total = this.totalPages;
+              const current = this.currentPage;
+              let pages = [];
+  
+              if (total <= 5) {
+                  return Array.from({ length: total }, (_, i) => i + 1);
+              }
+  
+              if (current <= 3) {
+                  pages = [1, 2, 3, 4, 5];
+              } else if (current >= total - 2) {
+                  pages = [total - 4, total - 3, total - 2, total - 1, total];
+              } else {
+                  pages = [current - 2, current - 1, current, current + 1, current + 2];
+              }
+  
+              return pages;
+          }
+      },
+      methods: {
+          async fetchData() {
+              try {
+                  const token = localStorage.getItem("token");
+  
+                  if (!token) {
+                      console.error("Token tidak ditemukan. Silakan login.");
+                      return;
+                  }
+  
+                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/admin/ruang", {
+                      headers: {
+                          Authorization: `Bearer ${token}`,
+                          Accept: "application/json",
+                      },
+                  });
+  
+                  if (response.data && response.data.data) {
+                      this.ruangans = response.data.data;
+                      console.log("Data ruangans berhasil diambil:", this.ruangans);
+                  } else {
+                      console.error("Format respons API tidak sesuai:", response.data);
+                  }
+              } catch (error) {
+                  console.error("Gagal mengambil data:", error);
+  
+                  if (error.response) {
+                      console.error("Respons API:", error.response.data);
+                  }
+  
+                  if (error.response && error.response.status === 401) {
+                      console.error("Token tidak valid atau kadaluarsa. Silakan login kembali.");
+                  }
+              }
+          },
+          changePage(page) {
+              this.currentPage = page;
+          },
+          prevPage() {
+              if (this.currentPage > 1) this.currentPage--;
+          },
+          nextPage() {
+              if (this.currentPage < this.totalPages) this.currentPage++;
+          }
+      },
+      mounted() {
+          this.fetchData();
       }
-    },
-    methods: {
-        openDetailModal(item) {
-            this.selectedItem = item;
-            this.showModalDetail = true;
-        },
-        changePage(page) {
-            this.currentPage = page;
-        },
-        prevPage() {
-            if (this.currentPage > 1) this.currentPage--;
-        },
-        nextPage() {
-            if (this.currentPage < this.totalPages) this.currentPage++;
-        }
-    }
   };
   </script>
   
