@@ -48,21 +48,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
+                    <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
                         <td class="p-4 py-5">
-                            <p class="block">{{item.no}}</p>
+                            <p class="block">{{index+1}}</p>
                         </td>
                         <td class="p-4 py-5">
-                            <p class="">{{item.peminjam}}</p>
+                            <p class="">{{item.user}}</p>
                         </td>
                         <td class="p-4 py-5">
                             <p class="">{{item.barang}}</p>
                         </td>
                         <td class="p-4 py-5">
-                            <p class="">{{item.tglmulai}}</p>
+                            <p class="">{{ new Date(item.tgl_mulai).toISOString().split('T')[0] }}</p>
                         </td>
                         <td class="p-4 py-5">
-                            <p class="">{{item.tglselesai}}</p>
+                            <p class="">{{ new Date(item.tgl_selesai).toISOString().split('T')[0] }}</p>
                         </td>
                         <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-24">
                             <p class="">{{item.status}}</p>
@@ -123,78 +123,111 @@
   </template>
   
   <script>
+  import axios from "axios";
+  
   export default {
-    data() {
-        function getRandomDateRange(year, month) {
-            const startDay = Math.floor(Math.random() * 10) + 5;
-            const endDay = startDay + Math.floor(Math.random() * 10) + 1;
-
-            return {
-                tglmulai: `${year}-${String(month).padStart(2, '0')}-${String(startDay).padStart(2, '0')}`,
-                tglselesai: `${year}-${String(month).padStart(2, '0')}-${String(endDay).padStart(2, '0')}`,
-            };
-        }
-        return {
-            items: Array.from({ length: 50 }, (_, i) => {
-                const { tglmulai, tglselesai } = getRandomDateRange(2025, 1);
-                const statuses = ["Pengajuan","Pengembalian","Approved","Dikembalikan"];
-                const status = statuses[Math.floor(Math.random() * statuses.length)];
-                return {
-                    no: i + 1,
-                    peminjam: `Peminjam ${i + 1}`,
-                    barang: `Barang ${i + 1}`,
-                    tglmulai,
-                    tglselesai,
-                    status
-                };
-            }),
-            currentPage: 1,
-            perPage: 5
-        };
-    },
-    computed: {
-      totalPages() {
-        return Math.ceil(this.items.length / this.perPage);
+      data() {
+          return {
+              barangs: [],
+              flattenedData: [],
+              currentPage: 1,
+              perPage: 5
+          };
       },
-      paginatedData() {
-        const start = (this.currentPage - 1) * this.perPage;
-        return this.items.slice(start, start + this.perPage);
+      computed: {
+          totalPages() {
+              return Math.ceil(this.flattenedData.length / this.perPage);
+          },
+          paginatedData() {
+              const start = (this.currentPage - 1) * this.perPage;
+              return this.flattenedData.slice(start, start + this.perPage);
+          },
+          visiblePages() {
+              const total = this.totalPages;
+              const current = this.currentPage;
+              let pages = [];
+  
+              if (total <= 5) {
+                  return Array.from({ length: total }, (_, i) => i + 1);
+              }
+  
+              if (current <= 3) {
+                  pages = [1, 2, 3, 4, 5];
+              } else if (current >= total - 2) {
+                  pages = [total - 4, total - 3, total - 2, total - 1, total];
+              } else {
+                  pages = [current - 2, current - 1, current, current + 1, current + 2];
+              }
+  
+              return pages;
+          }
       },
-      visiblePages() {
-        const total = this.totalPages;
-        const current = this.currentPage;
-        let pages = [];
-        
-        if (total <= 5) {
-          return Array.from({ length: total }, (_, i) => i + 1);
-        }
-        
-        if (current <= 3) {
-          pages = [1, 2, 3, 4, 5];
-        } else if (current >= total - 2) {
-          pages = [total - 4, total - 3, total - 2, total - 1, total];
-        } else {
-          pages = [current - 2, current - 1, current, current + 1, current + 2];
-        }
-        
-        return pages;
+      methods: {
+          async fetchData() {
+              try {
+                  const token = localStorage.getItem("token");
+  
+                  if (!token) {
+                      console.error("Token tidak ditemukan. Silakan login.");
+                      return;
+                  }
+  
+                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/admin/barang-dipinjam", {
+                      headers: {
+                          Authorization: `Bearer ${token}`,
+                          Accept: "application/json",
+                      },
+                  });
+  
+                  if (response.data && response.data.data) {
+                      this.barangs = response.data.data;
+                      this.flattenData();
+                      console.log(this.barangs);
+                  } else {
+                      console.error("Format respons API tidak sesuai:", response.data);
+                  }
+              } catch (error) {
+                  console.error("Gagal mengambil data:", error);
+  
+                  if (error.response) {
+                      console.error("Respons API:", error.response.data);
+                  }
+  
+                  if (error.response && error.response.status === 401) {
+                      console.error("Token tidak valid atau kadaluarsa. Silakan login kembali.");
+                  }
+              }
+          },
+          flattenData() {
+            this.barangs.forEach(item => {
+                if (item.detail && Array.isArray(item.detail)) {
+                    item.detail.forEach(detail => {
+                        this.flattenedData.push({
+                            id: detail.id,
+                            user: detail.user.nama,
+                            status: detail.status,
+                            barang: detail.barang?.nama || "Tidak ada nama", 
+                            tgl_mulai: detail.tgl_mulai,
+                            tgl_selesai: detail.tgl_selesai
+                        });
+                    });
+                }
+            });
+            console.log(this.flattenedData);
+            },
+          changePage(page) {
+              this.currentPage = page;
+          },
+          prevPage() {
+              if (this.currentPage > 1) this.currentPage--;
+          },
+          nextPage() {
+              if (this.currentPage < this.totalPages) this.currentPage++;
+          }
+      },
+      mounted() {
+          this.fetchData();
       }
-    },
-    methods: {
-        openDetailModal(item) {
-            this.selectedItem = item;
-            this.showModalDetail = true;
-        },
-        changePage(page) {
-            this.currentPage = page;
-        },
-        prevPage() {
-            if (this.currentPage > 1) this.currentPage--;
-        },
-        nextPage() {
-            if (this.currentPage < this.totalPages) this.currentPage++;
-        }
-    }
   };
   </script>
   
