@@ -12,7 +12,7 @@
           <select v-model="barangName" class="w-full border border-gray-300 px-4 py-3 text-xs rounded-lg appearance-none pr-10">
             <option value="" disabled>Pilih barang</option>
             <option v-for="barang in barangs" :key="barang.id" :value="barang.id">
-              {{ barang.nama }}
+              {{ barang.nama }} || stok : {{ barang.stok }}
             </option>
           </select>
           <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
