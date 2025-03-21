@@ -50,10 +50,10 @@
         <div class="w-1/4">
             <h1 class="text-[#0C8CE9] font-semibold text-xl mb-3">Pengguna Baru</h1>
             <div class="bg-white rounded-2xl px-5 pb-5">
-                <div v-for="(user, index) in users" :key="index" class="flex flex-row gap-2 items-center pt-5">
-                    <div class="bg-[#0C8CE9] w-10 h-10 rounded-full"></div>
-                    <div class="flex flex-col">
-                        <h5 class="text-xs text-[#1E1E1E]">{{ user.name }}</h5>
+                <div v-for="(user, index) in users" :key="index" class="flex flex-row gap-3 items-center pt-5">
+                    <div class="bg-[#0C8CE9] w-10 h-10 rounded-full flex-shrink-0"></div>
+                    <div class="flex flex-col max-w-[150px]">
+                        <h5 class="text-xs text-[#1E1E1E] whitespace-nowrap overflow-hidden text-ellipsis">{{ user.nama }}</h5>
                         <p class="text-xs text-[#0C8CE9]">{{ user.email }}</p>
                     </div>
                 </div>
@@ -63,7 +63,9 @@
 </template>
 
 <script>
-    export default {
+import axios from 'axios';
+
+export default {
     data() {
         return {
             items: Array.from({ length: 5 }, (_, i) => {
@@ -76,49 +78,54 @@
                     ruangpinjam
                 };
             }),
-            users: [
-                { name: "Ini Nama", email: "iniemail@mail.com" },
-                { name: "Ini Nama", email: "iniemail@mail.com" },
-                { name: "Ini Nama", email: "iniemail@mail.com" },
-                { name: "Ini Nama", email: "iniemail@mail.com" },
-                { name: "Ini Nama", email: "iniemail@mail.com" },
-                { name: "Ini Nama", email: "iniemail@mail.com" },
-                { name: "Ini Nama", email: "iniemail@mail.com" },
-            ],
+            users: [],
             currentPage: 1,
             perPage: 5
         };
     },
     computed: {
-      totalPages() {
-        return Math.ceil(this.items.length / this.perPage);
-      },
-      paginatedData() {
-        const start = (this.currentPage - 1) * this.perPage;
-        return this.items.slice(start, start + this.perPage);
-      },
-      visiblePages() {
-        const total = this.totalPages;
-        const current = this.currentPage;
-        let pages = [];
-        
-        if (total <= 5) {
-          return Array.from({ length: total }, (_, i) => i + 1);
-        }
-        
-        if (current <= 3) {
-          pages = [1, 2, 3, 4, 5];
-        } else if (current >= total - 2) {
-          pages = [total - 4, total - 3, total - 2, total - 1, total];
-        } else {
-          pages = [current - 2, current - 1, current, current + 1, current + 2];
-        }
-        
-        return pages;
-      }
-    },
+        totalPages() {
+            return Math.ceil(this.items.length / this.perPage);
+        },
+        paginatedData() {
+            const start = (this.currentPage - 1) * this.perPage;
+            return this.items.slice(start, start + this.perPage);
+        },
+        visiblePages() {
+            const total = this.totalPages;
+            const current = this.currentPage;
+            let pages = [];
 
+            if (total <= 5) {
+                return Array.from({ length: total }, (_, i) => i + 1);
+            }
+
+            if (current <= 3) {
+                pages = [1, 2, 3, 4, 5];
+            } else if (current >= total - 2) {
+                pages = [total - 4, total - 3, total - 2, total - 1, total];
+            } else {
+                pages = [current - 2, current - 1, current, current + 1, current + 2];
+            }
+
+            return pages;
+        }
+    },
     methods: {
+        async fetchUsers() {
+            try {
+                const token = localStorage.getItem("token");
+                const response = await axios.get('https://laravel-production-ea67.up.railway.app/api/admin/users', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                this.users = response.data.data;
+                console.log(response.data.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        },
         changePage(page) {
             this.currentPage = page;
         },
@@ -128,6 +135,9 @@
         nextPage() {
             if (this.currentPage < this.totalPages) this.currentPage++;
         }
+    },
+    mounted() {
+        this.fetchUsers();
     }
-  };
+};
 </script>
