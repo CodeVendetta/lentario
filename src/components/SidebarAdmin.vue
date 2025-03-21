@@ -60,10 +60,10 @@ export default {
       showModal: false,
       hoveredItem: null,
       menuItems: [
-        { name: "Dashboard", link: "#", icon: "icondashboardgrey.svg", icon2: "icondashboardblue.svg" },
-        { name: "Tambah Data", link: "#", icon: "icontmbhdatagrey.svg", icon2: "icontmbhdatablue.svg" },
-        { name: "Persetujuan", link: "#", icon: "iconpersetujuangrey.svg", icon2: "iconpersetujuanblue.svg" },
-        { name: "Logout", link: "#", icon: "iconlogoutgrey.svg", icon2: "iconlogoutblue.svg" },
+        { name: "Dashboard", link: "/dashboardadmin", icon: "icondashboardgrey.svg", icon2: "icondashboardblue.svg" },
+        { name: "Tambah Data", link: "/tambahdataadmin", icon: "icontmbhdatagrey.svg", icon2: "icontmbhdatablue.svg" },
+        { name: "Persetujuan", link: "/persetujuanadmin", icon: "iconpersetujuangrey.svg", icon2: "iconpersetujuanblue.svg" },
+        { name: "Logout", link: "/signout", icon: "iconlogoutgrey.svg", icon2: "iconlogoutblue.svg" },
       ],
     };
   },
