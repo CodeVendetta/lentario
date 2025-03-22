@@ -21,8 +21,9 @@
           <div class="relative">
               <select v-model="status" class="w-full border border-gray-300 px-4 py-3 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none pr-10">
                   <option value="" disabled>Pilih Status</option>
-                  <option value="Tersedia">Tersedia</option>
-                  <option value="Tidak Tersedia">Tidak Tersedia</option>
+                  <option v-for="option in statusOptions" :key="option.id" :value="option.nama">
+                    {{ option.nama }}
+                  </option>
               </select>
               <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                   <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -51,18 +52,41 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    props: {
-      isOpen: Boolean, 
-    },
-    data() {
-      return {
-        barangName: "",
-        jumlahBarang: "",
-        status: ""
-      };
+<script>
+import axios from 'axios';
+
+export default {
+  props: {
+    isOpen: Boolean, 
+  },
+  data() {
+    return {
+      status: "",
+      statusOptions: []
+    };
+  },
+  methods: {
+    async fetchStatus() {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("Token tidak ditemukan. Harap login kembali.");
+          return;
+        }
+
+        const response = await axios.get('https://laravel-production-ea67.up.railway.app/api/admin/status', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+
+        this.statusOptions = response.data.status_barang;
+      } catch (error) {
+        console.error("Error fetching status:", error.response || error.message);
+      }
     }
-  };
-  </script>
+  },
+  mounted() {
+    this.fetchStatus();
+  }
+};
+</script>
   
