@@ -49,7 +49,7 @@
                         <td class="p-4 py-5 text-center">{{ barang.stok }}</td>
                         <td class="p-4 py-5 text-center text-[#0C8CE9]">{{ barang.status_barang?.nama || 'Tidak diketahui' }}</td>
                         <td class="p-4 py-5 text-center">
-                            <button><img src="../assets/iconmata.svg" alt="" width="40"></button>
+                            <button @click="openDetailModal(barang.id)"><img src="../assets/iconmata.svg" alt="" width="40"></button>
                         </td>
                     </tr>
                 </tbody>
@@ -98,18 +98,18 @@
     </div>
 
     <ModalTambahData :isOpen="showModalTambah" @close="showModalTambah = false" />
-    <ModalDetailPinjamBarang :isOpen="showModalDetail" :item="selectedItem" @close="showModalDetail = false" />
+    <ModalDetailBarang :isOpen="showModalDetail" :item="selectedItem" @close="showModalDetail = false" />
   </template>
   
   <script>
   import axios from "axios";
   import ModalTambahData from "./ModalTambahBarangAdmin.vue";
-  import ModalDetailPinjamBarang from "./ModalDetailPinjamBarang.vue";
+  import ModalDetailBarang from "./ModalDetailBarang.vue";
 
   export default {
       components: {
           ModalTambahData,
-          ModalDetailPinjamBarang
+          ModalDetailBarang
       },
       data() {
           return {
@@ -190,7 +190,11 @@
           },
           nextPage() {
               if (this.currentPage < this.totalPages) this.currentPage++;
-          }
+          },
+          openDetailModal(barang) {
+            this.selectedItem = barang;
+            this.showModalDetail = true;
+        }
       },
       mounted() {
           this.fetchData();

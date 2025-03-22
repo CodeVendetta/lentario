@@ -43,7 +43,7 @@
                         <td class="p-4 py-5">{{ ruang.nama }}</td>
                         <td class="p-4 py-5 text-center text-[#0C8CE9]">{{ ruang.status_ruang?.nama || 'Tidak diketahui' }}</td>
                         <td class="p-4 py-5 text-center">
-                            <button><img src="../assets/iconmata.svg" alt="" width="40"></button>
+                            <button @click="openDetailModal(ruang.id)"><img src="../assets/iconmata.svg" alt="" width="40"></button>
                         </td>
                     </tr>
                 </tbody>
@@ -92,18 +92,18 @@
     </div>
 
     <ModalTambahData :isOpen="showModalTambah" @close="showModalTambah = false" />
-    <ModalDetailPinjamBarang :isOpen="showModalDetail" :item="selectedItem" @close="showModalDetail = false" />
+    <ModalDetailRuang :isOpen="showModalDetail" :item="selectedItem" @close="showModalDetail = false" />
   </template>
   
   <script>
   import axios from "axios";
   import ModalTambahData from "./ModalTambahRuangAdmin.vue";
-  import ModalDetailPinjamBarang from "./ModalDetailPinjamBarang.vue";
+  import ModalDetailRuang from "./ModalDetailRuang.vue";
   
   export default {
       components: {
           ModalTambahData,
-          ModalDetailPinjamBarang
+          ModalDetailRuang
       },
       data() {
           return {
@@ -161,7 +161,6 @@
   
                   if (response.data && response.data.data) {
                       this.ruangans = response.data.data;
-                      console.log("Data ruangans berhasil diambil:", this.ruangans);
                   } else {
                       console.error("Format respons API tidak sesuai:", response.data);
                   }
@@ -185,7 +184,11 @@
           },
           nextPage() {
               if (this.currentPage < this.totalPages) this.currentPage++;
-          }
+          },
+          openDetailModal(ruang) {
+            this.selectedItem = ruang;
+            this.showModalDetail = true;
+        }
       },
       mounted() {
           this.fetchData();

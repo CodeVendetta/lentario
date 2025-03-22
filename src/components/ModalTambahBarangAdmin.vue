@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 font-poppins">
+    <div v-if="isOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 font-poppins">
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <div class="flex justify-between items-center mb-7">
           <h3 class="font-semibold text-[#0C8CE9]">Tambah Data Barang</h3>
@@ -46,11 +46,18 @@
         </div>
 
         <div class="mt-4 flex justify-end gap-2">
-        <button @click="$emit('close')" class="bg-[#DC3545] text-white px-4 py-2 rounded-3xl hover:bg-[#c13140] text-xs">Cancel</button>
-        <button @click="submitForm" class="bg-[#1EAE69] text-white px-4 py-2 rounded-3xl hover:bg-[#26a467] text-xs" :disabled="!barangName || !status">
-          Simpan Perubahan
-        </button>
-      </div>
+          <button @click="$emit('close')" class="bg-[#DC3545] text-white px-4 py-2 rounded-3xl hover:bg-[#c13140] text-xs">Cancel</button>
+          <button @click="submitForm" class="bg-[#1EAE69] text-white px-4 py-2 rounded-3xl hover:bg-[#26a467] text-xs" :disabled="!barangName || !status">
+            Simpan Perubahan
+          </button>
+        </div>
+
+        <div v-if="message" :class="messageType === 'success' ? 'bg-green-500' : 'bg-red-500'" 
+          class="fixed bottom-5 right-5 text-white flex items-center gap-3 px-4 py-3 rounded-lg shadow-lg">
+            <span v-if="messageType === 'success'" class="text-sm">🎉</span>
+            <span class="font-semibold text-sm">{{ message }}</span>
+          <button @click="message = ''" class="ml-auto text-white text-sm font-bold">✖</button>
+        </div>
       </div>
     </div>
   </template>
@@ -68,6 +75,8 @@
       const statusOptions = ref([]);
       const file = ref(null);
       const fileName = ref("");
+      const message = ref("");
+      const messageType = ref("");
   
       const fetchStatus = async () => {
         try {
@@ -86,8 +95,19 @@
       };
   
       const handleFileUpload = (event) => {
-        file.value = event.target.files[0];
-        fileName.value = file.value ? file.value.name : "";
+        const selectedFile = event.target.files[0];
+
+        if (selectedFile) {
+          if (selectedFile.size > 2 * 1024 * 1024) {
+            message.value = "Ukuran file maksimal 2MB!";
+            messageType.value = "error";
+            file.value = null;
+            fileName.value = "";
+          } else {
+            file.value = selectedFile;
+            fileName.value = selectedFile.name;
+          }
+        }
       };
   
       const submitForm = async () => {
@@ -95,7 +115,6 @@
         formData.append("nama", barangName.value);
         formData.append("status", status.value);
         formData.append("stok", jumlahBarang.value);
-        formData.append("lokasi", 'tes');
         if (file.value) {
           formData.append("foto", file.value);
         }
@@ -107,17 +126,22 @@
               "Content-Type": "multipart/form-data",
             },
           });
-          alert("Data barang berhasil ditambahkan!");
-          emit("close");
+          message.value = "Data barang berhasil ditambahkan!";
+          messageType.value = "success";
+
+          setTimeout(() => {
+            emit("close");
+          }, 2000);
           window.location.reload();
         } catch (error) {
-          console.error("Gagal menambahkan barang:", error.response || error.message);
+          message.value = error.response?.data?.message || "Gagal menambahkan ruang.";
+          messageType.value = "error";
         }
       };
   
       onMounted(fetchStatus);
   
-      return { barangName, status, jumlahBarang, statusOptions, file, fileName, handleFileUpload, submitForm };
+      return { barangName, status, jumlahBarang, statusOptions, file, fileName, message, messageType, handleFileUpload, submitForm };
     },
   };
   </script>
