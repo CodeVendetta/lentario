@@ -68,10 +68,10 @@
                             <p class="">{{item.status}}</p>
                         </td>
                         <td class="p-4 py-5 text-center justify-center">
-                            <button v-if="item.status !== 'Approved' && item.status !== 'Dikembalikan'">
+                            <button v-if="item.status == 'Menunggu Persetujuan' || item.status == 'Menunggu Konfirmasi Pengembalian'">
                                 <img src="../assets/icontolak.svg" alt="" width="35">
                             </button>
-                            <button v-if="item.status !== 'Approved' && item.status !== 'Dikembalikan'">
+                            <button v-if="item.status == 'Menunggu Persetujuan' || item.status == 'Menunggu Konfirmasi Pengembalian'">
                                 <img src="../assets/iconsetuju.svg" alt="" width="25" class="pb-[5px]">
                             </button>
                         </td>
@@ -204,9 +204,9 @@
                     item.detail.forEach(detail => {
                         this.flattenedData.push({
                             id: detail.id,
-                            user: detail.user.nama,
-                            status: detail.status,
-                            barang: detail.barang?.nama || "Tidak ada nama", 
+                            user: item.user.nama,
+                            status: detail.status_peminjaman,
+                            barang: detail.nama_barang, 
                             tgl_mulai: detail.tgl_mulai,
                             tgl_selesai: detail.tgl_selesai
                         });
