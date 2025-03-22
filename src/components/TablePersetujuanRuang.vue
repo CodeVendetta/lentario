@@ -50,7 +50,7 @@
                 <tbody>
                     <tr v-for="(item, index) in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
                         <td class="p-4 py-5">
-                            <p class="block">{{index + 1}}</p>
+                            <p class="block">{{index + 1 + (currentPage - 1) * perPage}}</p>
                         </td>
                         <td class="p-4 py-5">
                             <p class="">{{item.user}}</p>

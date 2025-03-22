@@ -44,7 +44,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(barang, index) in paginatedData" :key="barang.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
-                        <td class="p-4 py-5">{{ index + 1 }}</td>
+                        <td class="p-4 py-5">{{ index + 1 + (currentPage - 1) * perPage }}</td>
                         <td class="p-4 py-5">{{ barang.nama }}</td>
                         <td class="p-4 py-5 text-center">{{ barang.stok }}</td>
                         <td class="p-4 py-5 text-center text-[#0C8CE9]">{{ barang.status_barang?.nama || 'Tidak diketahui' }}</td>
