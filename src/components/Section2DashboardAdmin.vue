@@ -29,18 +29,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in paginatedData" :key="item.id" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
+                        <tr v-for="(item, index) in dataDipinjam" :key="item" class="hover:bg-slate-50 border-b border-slate-200 text-[#1E1E1E] text-sm">
                             <td class="p-4 py-5">
-                                <p class="block">{{item.no}}</p>
+                                <p class="block">{{index + 1}}</p>
                             </td>
                             <td class="p-4 py-5">
-                                <p class="">{{item.nama}}</p>
+                                <p class="">{{item.user.nama}}</p>
                             </td>
                             <td class="p-4 py-5 text-center">
-                                <p class="">{{item.barangpinjam}}</p>
+                                <p class="">{{item.total_peminjaman.total_barang}}</p>
                             </td>
                             <td class="p-4 py-5 text-center">
-                                <p class="">{{item.ruangpinjam}}</p>
+                                <p class="">{{item.total_peminjaman.total_ruang}}</p>
                             </td>
                         </tr>
                     </tbody>
@@ -68,28 +68,19 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            items: Array.from({ length: 5 }, (_, i) => {
-                const barangpinjam = Math.floor(Math.random() * 3) + 1;
-                const ruangpinjam = Math.floor(Math.random() * 3) + 1;
-                return {
-                    no: i + 1,
-                    nama: `Orang ke ${i + 1}`,
-                    barangpinjam,
-                    ruangpinjam
-                };
-            }),
             users: [],
+            dataDipinjam: [],
             currentPage: 1,
             perPage: 5
         };
     },
     computed: {
         totalPages() {
-            return Math.ceil(this.items.length / this.perPage);
+            return Math.ceil(this.dataDipinjam.length / this.perPage);
         },
         paginatedData() {
             const start = (this.currentPage - 1) * this.perPage;
-            return this.items.slice(start, start + this.perPage);
+            return this.dataDipinjam.slice(start, start + this.perPage);
         },
         visiblePages() {
             const total = this.totalPages;
@@ -112,18 +103,32 @@ export default {
         }
     },
     methods: {
-        async fetchUsers() {
+        async fetchData(url) {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get('https://laravel-production-ea67.up.railway.app/api/admin/users', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                if (!token) {
+                    console.error("Token tidak ditemukan. Harap login kembali.");
+                    return;
+                }
+
+                const response = await axios.get(url, {
+                    headers: { Authorization: `Bearer ${token}` }
                 });
-                this.users = response.data.data;
+
+                return response.data.data;
             } catch (error) {
-                console.error('Error fetching users:', error);
+                console.error(`Error fetching data from ${url}:`, error.response || error.message);
+                return null;
             }
+        },
+
+        async fetchUsers() {
+            this.users = await this.fetchData('https://laravel-production-ea67.up.railway.app/api/admin/users') || [];
+        },
+
+        async fetchDataDipinjam() {
+            this.dataDipinjam = await this.fetchData('https://laravel-production-ea67.up.railway.app/api/admin/barang-ruang-dipinjam');
+            console.log(this.dataDipinjam);
         },
         changePage(page) {
             this.currentPage = page;
@@ -137,6 +142,7 @@ export default {
     },
     mounted() {
         this.fetchUsers();
+        this.fetchDataDipinjam();
     }
 };
 </script>
