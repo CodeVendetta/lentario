@@ -65,10 +65,10 @@
                         <p class="">{{item.barang['nama']}}</p>
                     </td>
                     <td class="p-4 py-5 text-center">
-                        <p class="">{{ new Date(item.tgl_mulai).toISOString().split('T')[0] }}</p>
+                        <p class="">{{ new Date(item.tgl_mulai).toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-') }}</p>
                     </td>
                     <td class="p-4 py-5 text-center">
-                        <p class="">{{ new Date(item.tgl_selesai).toISOString().split('T')[0] }}</p>
+                        <p class="">{{ new Date(item.tgl_selesai).toLocaleDateString('id-ID', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-') }}</p>
                     </td>
                     <td class="p-4 py-5 text-center">
                         <p class="">{{item.qty}}</p>
