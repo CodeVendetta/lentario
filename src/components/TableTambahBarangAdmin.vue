@@ -167,7 +167,6 @@
   
                   if (response.data && response.data.data) {
                       this.barangs = response.data.data;
-                      console.log("Data barangs berhasil diambil:", this.barangs);
                   } else {
                       console.error("Format respons API tidak sesuai:", response.data);
                   }
