@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-full font-poppins">
+  <div class="flex min-h-screen h-full font-poppins">
     <aside class="bg-white shadow-xl py-4 z-10">
       <div class="flex flex-col h-full items-center">
         <a href="#" class="mb-10 mt-2 mx-10">
