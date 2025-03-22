@@ -21,7 +21,7 @@
           <div class="relative">
               <select v-model="status" class="w-full border border-gray-300 px-4 py-3 text-xs rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none pr-10">
                   <option value="" disabled>Pilih Status</option>
-                  <option v-for="option in statusOptions" :key="option.id" :value="option.nama">
+                  <option v-for="option in statusOptions" :key="option.id" :value="option.id">
                     {{ option.nama }}
                   </option>
               </select>
@@ -34,59 +34,90 @@
         </div>
 
         <div class="mt-4 flex flex-col gap-1">
-            <label for="file_input" class="text-xs font-medium text-gray-700">Foto Barang</label>
-            <div class="relative w-full">
-                <input id="file_input" type="file" class="hidden" onchange="updateFileName(this)">
-                <label for="file_input" class="flex items-center w-full border border-gray-300 rounded-lg cursor-pointer bg-white transition">
-                    <span class="bg-[#DDE1EB] text-[#60656E] px-4 py-3 text-xs font-medium rounded-l-lg">Choose File</span>
-                    <span id="file_name" class="px-4 py-2 text-xs text-gray-600">No file chosen</span>
-                </label>
-            </div>
+          <label for="file_input" class="text-xs font-medium text-gray-700">Foto Ruang</label>
+          <div class="relative w-full">
+            <input id="file_input" type="file" class="hidden" @change="handleFileUpload">
+            <label for="file_input" class="flex items-center w-full border border-gray-300 rounded-lg cursor-pointer bg-white transition">
+              <span class="bg-[#DDE1EB] text-[#60656E] px-4 py-3 text-xs font-medium rounded-l-lg">Choose File</span>
+              <span v-if="fileName" class="text-xs text-gray-600 px-4 py-2">File: {{ fileName }}</span>
+              <span v-else class="text-xs text-gray-600 px-4 py-2">No file chosen</span>
+            </label>
+          </div>
         </div>
 
         <div class="mt-4 flex justify-end gap-2">
-            <button @click="$emit('close')" class="bg-[#DC3545] text-white px-4 py-2 rounded-3xl hover:bg-[#c13140] text-xs">Cancel</button>
-            <button @click="saveData" class="bg-[#1EAE69] text-white px-4 py-2 rounded-3xl hover:bg-[#26a467] text-xs disabled:bg-[#73c59d] disabled:cursor-not-allowed" disabled>Simpan Perubahan</button>
-        </div>
+        <button @click="$emit('close')" class="bg-[#DC3545] text-white px-4 py-2 rounded-3xl hover:bg-[#c13140] text-xs">Cancel</button>
+        <button @click="submitForm" class="bg-[#1EAE69] text-white px-4 py-2 rounded-3xl hover:bg-[#26a467] text-xs" :disabled="!barangName || !status">
+          Simpan Perubahan
+        </button>
+      </div>
       </div>
     </div>
   </template>
   
-<script>
-import axios from 'axios';
-
-export default {
-  props: {
-    isOpen: Boolean, 
-  },
-  data() {
-    return {
-      status: "",
-      statusOptions: []
-    };
-  },
-  methods: {
-    async fetchStatus() {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("Token tidak ditemukan. Harap login kembali.");
-          return;
-        }
-
-        const response = await axios.get('https://laravel-production-ea67.up.railway.app/api/admin/status', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        this.statusOptions = response.data.status_barang;
-      } catch (error) {
-        console.error("Error fetching status:", error.response || error.message);
-      }
-    }
-  },
-  mounted() {
-    this.fetchStatus();
-  }
-};
-</script>
+  <script>
+  import { ref, onMounted } from 'vue';
+  import axios from 'axios';
   
+  export default {
+    props: { isOpen: Boolean },
+    setup(props, { emit }) {
+      const barangName = ref("");
+      const jumlahBarang = ref("");
+      const status = ref("");
+      const statusOptions = ref([]);
+      const file = ref(null);
+      const fileName = ref("");
+  
+      const fetchStatus = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          if (!token) {
+            console.error("Token tidak ditemukan. Harap login kembali.");
+            return;
+          }
+          const response = await axios.get('https://laravel-production-ea67.up.railway.app/api/admin/status', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          statusOptions.value = response.data.status_barang;
+        } catch (error) {
+          console.error("Error fetching status:", error.response || error.message);
+        }
+      };
+  
+      const handleFileUpload = (event) => {
+        file.value = event.target.files[0];
+        fileName.value = file.value ? file.value.name : "";
+      };
+  
+      const submitForm = async () => {
+        const formData = new FormData();
+        formData.append("nama", barangName.value);
+        formData.append("status", status.value);
+        formData.append("stok", jumlahBarang.value);
+        formData.append("lokasi", 'tes');
+        if (file.value) {
+          formData.append("foto", file.value);
+        }
+        try {
+          const token = localStorage.getItem("token");
+          await axios.post("https://laravel-production-ea67.up.railway.app/api/admin/barang/store", formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          });
+          alert("Data barang berhasil ditambahkan!");
+          emit("close");
+          window.location.reload();
+        } catch (error) {
+          console.error("Gagal menambahkan barang:", error.response || error.message);
+        }
+      };
+  
+      onMounted(fetchStatus);
+  
+      return { barangName, status, jumlahBarang, statusOptions, file, fileName, handleFileUpload, submitForm };
+    },
+  };
+  </script>
