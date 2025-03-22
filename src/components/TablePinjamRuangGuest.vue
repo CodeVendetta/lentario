@@ -47,6 +47,10 @@
                                 Action
                             </p>
                         </th>
+                        <th class="p-4 border-b border-slate-200 text-center">
+                            <p class="text-sm font-normal leading-none text-[#787878]">
+                            </p>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -65,6 +69,9 @@
                         </td>
                         <td class="p-4 py-5 text-center text-[#0C8CE9] max-w-24">
                             <p class="">{{item.status_peminjaman['nama']}}</p>
+                        </td>
+                        <td class="p-4 py-5 text-center">
+                            <button @click="openDetailModal(item.ruang['id'])"><img src="../assets/iconmata.svg" alt="" width="40"></button>
                         </td>
                         <td v-if="item.status_peminjaman['nama'] === 'Disetujui'" class="p-4 py-5 text-center">
                             <button @click="returnRoom(item.id)" class="bg-[#DC3545] text-white text-[8px] py-2 px-6 rounded-3xl hover:bg-red-700">
@@ -118,19 +125,23 @@
     </div>
 
     <ModalTambahData :isOpen="showModalTambah" @close="showModalTambah = false" />
+    <ModalDetailRuang :isOpen="showModalDetail" :item="selectedItem" @close="showModalDetail = false" />
   </template>
   
   <script>
   import axios from 'axios';
   import ModalTambahData from "./ModalTambahPinjamRuang.vue";
+  import ModalDetailRuang from "./ModalDetailRuang.vue";
 
   export default {
     components: {
-        ModalTambahData
+        ModalTambahData,
+        ModalDetailRuang
     },
       data() {
           return {
             showModalTambah: false,
+            showModalDetail: false,
             items: [],
             currentPage: 1,
             perPage: 5,

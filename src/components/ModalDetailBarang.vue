@@ -36,22 +36,32 @@ export default {
     async fetchRoomDetail() {
       try {
         const token = localStorage.getItem("token");
+        const role = localStorage.getItem("role");
   
         if (!token) {
             console.error("Token tidak ditemukan. Silakan login.");
             return;
         }
 
-        const response = await fetch(`https://laravel-production-ea67.up.railway.app/api/admin/barang/${this.item}`,{
-          headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-          },
-        });
-        const data = await response.json();
-        this.imageUrl = data.data.foto || null;
-
-        console.log(data);
+        if (role == 'user') {
+          const response = await fetch(`https://laravel-production-ea67.up.railway.app/api/user/barang/${this.item}`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+            },
+          });
+          const data = await response.json();
+          this.imageUrl = data.data.foto || null;
+        } else if (role == 'admin') {
+          const response = await fetch(`https://laravel-production-ea67.up.railway.app/api/admin/barang/${this.item}`,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+            },
+          });
+          const data = await response.json();
+          this.imageUrl = data.data.foto || null;
+        }
       } catch (error) {
         console.error("Error fetching room data:", error);
         this.imageUrl = null;
