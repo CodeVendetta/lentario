@@ -68,11 +68,16 @@
                             <p class="">{{item.status}}</p>
                         </td>
                         <td class="p-4 py-5 text-center justify-center">
-                            <button v-if="item.status == 'Menunggu Persetujuan' || item.status == 'Menunggu Konfirmasi Pengembalian'">
-                                <img src="../assets/icontolak.svg" alt="" width="35">
+                            <button 
+                                v-if="item.status == 'Menunggu Persetujuan' || item.status == 'Menunggu Konfirmasi Pengembalian'" 
+                                @click="handleApproval(item.id, item.status, false)">
+                                <img src="../assets/icontolak.svg" alt="Tolak" width="35">
                             </button>
-                            <button v-if="item.status == 'Menunggu Persetujuan' || item.status == 'Menunggu Konfirmasi Pengembalian'">
-                                <img src="../assets/iconsetuju.svg" alt="" width="25" class="pb-[5px]">
+                            
+                            <button 
+                                v-if="item.status == 'Menunggu Persetujuan' || item.status == 'Menunggu Konfirmasi Pengembalian'" 
+                                @click="handleApproval(item.id, item.status, true)">
+                                <img src="../assets/iconsetuju.svg" alt="Setuju" width="25" class="pb-[5px]">
                             </button>
                         </td>
                     </tr>
@@ -203,7 +208,7 @@
                 if (item.detail && Array.isArray(item.detail)) {
                     item.detail.forEach(detail => {
                         this.flattenedData.push({
-                            id: detail.id,
+                            id: detail.id_peminjaman,
                             user: item.user.nama,
                             status: detail.status_peminjaman,
                             barang: detail.nama_barang, 
@@ -214,6 +219,66 @@
                 }
             });
             console.log(this.flattenedData);
+            },
+            async handleApproval(id, nama, isApproved) {
+                if (!id) {
+                    alert("ID tidak valid!");
+                    return;
+                }
+
+                if (!confirm("Apakah Anda yakin ingin mengubah status barang ini?")) {
+                    return;
+                }
+
+                const token = localStorage.getItem("token");
+                let url = "";
+                let requestBody = {};
+
+                if (isApproved) {
+                    if (nama === "Menunggu Persetujuan") {
+                        requestBody.status = 2;
+                    } else {
+                        requestBody.status = 5; 
+                    }
+                } else {
+                    if (nama === "Menunggu Persetujuan") {
+                        requestBody.status = 3;
+                    } else {
+                        requestBody.status = 2; 
+                    }
+                }
+
+                let headers = {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                };
+
+                try {
+                    if (nama === "Menunggu Persetujuan") {
+                        url = `https://laravel-production-ea67.up.railway.app/api/admin/approve-reject-peminjaman-barang/${id}`;
+                    } else {
+                        url = `https://laravel-production-ea67.up.railway.app/api/admin/approve-return-barang/${id}`;
+                    }
+
+                    if (!url) {
+                        alert("Status tidak valid.");
+                        return;
+                    }
+
+                    const response = await axios.put(url, requestBody, { headers });
+
+                    alert("Status berhasil diperbarui!");
+                    console.log("Response:", response.data);
+                    location.reload();
+                } catch (error) {
+                    console.error("Error:", error);
+
+                    if (error.response && error.response.data) {
+                        alert(`Terjadi kesalahan: ${error.response.data.message || "Silakan coba lagi."}`);
+                    } else {
+                        alert("Terjadi kesalahan saat memperbarui status.");
+                    }
+                }
             },
           changePage(page) {
               this.currentPage = page;
