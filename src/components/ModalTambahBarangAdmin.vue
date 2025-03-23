@@ -34,7 +34,7 @@
         </div>
 
         <div class="mt-4 flex flex-col gap-1">
-          <label for="file_input" class="text-xs font-medium text-gray-700">Foto Ruang</label>
+          <label for="file_input" class="text-xs font-medium text-gray-700">Foto Barang</label>
           <div class="relative w-full">
             <input id="file_input" type="file" class="hidden" @change="handleFileUpload">
             <label for="file_input" class="flex items-center w-full border border-gray-300 rounded-lg cursor-pointer bg-white transition">
@@ -134,7 +134,7 @@
           }, 2000);
           window.location.reload();
         } catch (error) {
-          message.value = error.response?.data?.message || "Gagal menambahkan ruang.";
+          message.value = error.response?.data?.message || "Gagal menambahkan barang.";
           messageType.value = "error";
         }
       };
