@@ -263,7 +263,7 @@
                         return;
                     }
 
-                    const response = await apiAdmin.put(url, requestBody, { headers });
+                    await apiAdmin.put(url, requestBody, { headers });
 
                     alert("Status berhasil diperbarui!");
                     location.reload();
