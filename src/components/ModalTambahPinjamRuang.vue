@@ -144,9 +144,13 @@ setup(props, { emit }) {
         }, 1000);
       
     } catch (error) {
-      message.value = "Gagal menghubungi server.";
-      messageType.value = "error";
-    }
+        if (error.response && error.response.status === 400) {
+            message.value = error.response.data.message;
+        } else {
+            message.value = "Gagal menghubungi server.";
+        }
+        messageType.value = "error";
+      }
   };
 
   return {
