@@ -33,6 +33,7 @@
 import { ref } from 'vue';
 import { Eye, EyeOff } from 'lucide-vue-next';
 import { useRouter } from 'vue-router';
+import { apiUser } from '@/api.js';
 
 const router = useRouter();
 const showPassword = ref(false);
@@ -47,14 +48,10 @@ const handleLogin = async () => {
   const payload = { email: email.value, password: password.value };
 
   try {
-    const response = await fetch('https://laravel-production-ea67.up.railway.app/api/user/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+    const response = await apiUser.post('/login', payload);
     
-    const data = await response.json();
-    if (response.ok) {
+    const data = response.data;
+    if (response.status === 200) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.user['role']);
       localStorage.setItem('user', JSON.stringify({

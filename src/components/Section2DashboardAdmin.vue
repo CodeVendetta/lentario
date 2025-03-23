@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { apiAdmin } from '@/api.js';
 
 export default {
     data() {
@@ -111,7 +111,7 @@ export default {
                     return;
                 }
 
-                const response = await axios.get(url, {
+                const response = await apiAdmin.get(url, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
@@ -123,12 +123,11 @@ export default {
         },
 
         async fetchUsers() {
-            this.users = await this.fetchData('https://laravel-production-ea67.up.railway.app/api/admin/users') || [];
+            this.users = await this.fetchData('/users') || [];
         },
 
         async fetchDataDipinjam() {
-            this.dataDipinjam = await this.fetchData('https://laravel-production-ea67.up.railway.app/api/admin/barang-ruang-dipinjam');
-            console.log(this.dataDipinjam);
+            this.dataDipinjam = await this.fetchData('/barang-ruang-dipinjam');
         },
         changePage(page) {
             this.currentPage = page;

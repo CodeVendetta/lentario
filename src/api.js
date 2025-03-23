@@ -1,5 +1,5 @@
 import axios from 'axios';
-import config from './config.js';
+import config from '@/config.js';
 
 export const apiAdmin = axios.create({
   baseURL: config.baseUrlAdmin,
@@ -10,3 +10,6 @@ export const apiUser = axios.create({
   baseURL: config.baseUrlUser,
   headers: { Authorization: `Bearer ${config.tokenUser}` }
 });
+
+export const tokenUser = config.tokenUser;
+export const tokenAdmin = config.tokenAdmin;

@@ -78,7 +78,10 @@
 import { ref } from 'vue';
 import { Eye, EyeOff } from 'lucide-vue-next';
 import { validateForm } from '@/utils/validation';
+import { useRouter } from 'vue-router';
+import { apiUser } from '@/api.js';
 
+const router = useRouter();
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
 const name = ref("");
@@ -129,32 +132,35 @@ const submitForm = async () => {
     }
 
     try {
-        const response = await fetch("https://laravel-production-ea67.up.railway.app/api/user/register", {
-            method: "POST",
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                nama: name.value,
-                nim: nim.value,
-                prodi: prodi.value,
-                email: email.value,
-                password: password.value,
-                password_confirmation: password_confirmation.value,
-            }),
+        const response = await apiUser.post('/register', {
+            nama: name.value,
+            nim: nim.value,
+            prodi: prodi.value,
+            email: email.value,
+            password: password.value,
+            password_confirmation: password_confirmation.value,
         });
 
-        const data = await response.json();
+        const data = response.data;
 
-        if (!response.ok) {
+        if (!response.status === 200) {
             message.value = data.message || "Terjadi kesalahan saat mendaftar.";
             return;
         }
 
         message.value = "Pendaftaran berhasil!";
+        
+        setTimeout(() => {
+            router.push('/');
+        }, 3000);
     } catch (error) {
-        message.value = "Gagal menghubungi server. Coba lagi nanti.";
+        if (error.response?.data?.errors) {
+            message.value = Object.values(error.response.data.errors)
+                .flat()
+                .join("\n");
+        } else {
+            message.value = "Terjadi kesalahan saat mendaftar.";
+        }
     }
 };
 

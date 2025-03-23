@@ -128,7 +128,7 @@
   </template>
   
   <script>
-  import axios from "axios";
+  import { apiAdmin } from '@/api.js';
   
   export default {
       data() {
@@ -177,7 +177,7 @@
                       return;
                   }
   
-                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/admin/barang-dipinjam", {
+                  const response = await apiAdmin.get("/barang-dipinjam", {
                       headers: {
                           Authorization: `Bearer ${token}`,
                           Accept: "application/json",
@@ -187,7 +187,6 @@
                   if (response.data && response.data.data) {
                       this.barangs = response.data.data;
                       this.flattenData();
-                      console.log(this.barangs);
                   } else {
                       console.error("Format respons API tidak sesuai:", response.data);
                   }
@@ -218,7 +217,6 @@
                     });
                 }
             });
-            console.log(this.flattenedData);
             },
             async handleApproval(id, nama, isApproved) {
                 if (!id) {
@@ -255,9 +253,9 @@
 
                 try {
                     if (nama === "Menunggu Persetujuan") {
-                        url = `https://laravel-production-ea67.up.railway.app/api/admin/approve-reject-peminjaman-barang/${id}`;
+                        url = `/approve-reject-peminjaman-barang/${id}`;
                     } else {
-                        url = `https://laravel-production-ea67.up.railway.app/api/admin/approve-return-barang/${id}`;
+                        url = `/approve-return-barang/${id}`;
                     }
 
                     if (!url) {
@@ -265,10 +263,9 @@
                         return;
                     }
 
-                    const response = await axios.put(url, requestBody, { headers });
+                    const response = await apiAdmin.put(url, requestBody, { headers });
 
                     alert("Status berhasil diperbarui!");
-                    console.log("Response:", response.data);
                     location.reload();
                 } catch (error) {
                     console.error("Error:", error);

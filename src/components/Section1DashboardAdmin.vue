@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { apiAdmin } from '@/api.js';
 
 export default {
     data() {
@@ -53,14 +53,14 @@ export default {
     },
     async mounted() {
         try {
-            const token = localStorage.getItem("token");
+            const token = localStorage.getItem('token');
             const headers = token ? { Authorization: `Bearer ${token}` } : {};
             
             const [userRes, barangRes, ruangRes, terpinjamRes] = await Promise.all([
-                axios.get("https://laravel-production-ea67.up.railway.app/api/admin/user/count", { headers }),
-                axios.get("https://laravel-production-ea67.up.railway.app/api/admin/barang/count", { headers }),
-                axios.get("https://laravel-production-ea67.up.railway.app/api/admin/ruang/count", { headers }),
-                axios.get("https://laravel-production-ea67.up.railway.app/api/admin/dashboard/total-dipinjam", { headers })
+                apiAdmin.get("/user/count", { headers }),
+                apiAdmin.get("/barang/count", { headers }),
+                apiAdmin.get("/ruang/count", { headers }),
+                apiAdmin.get("/dashboard/total-dipinjam", { headers }),
             ]);
             
             this.akunTerdaftar = userRes.data.total_users;

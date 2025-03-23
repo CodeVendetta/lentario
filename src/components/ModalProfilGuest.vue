@@ -57,7 +57,7 @@ export default {
     isOpen(newVal) {
       if (newVal) {
         document.body.classList.add("overflow-hidden");
-        this.loadUserData(); // Ambil data saat modal dibuka
+        this.loadUserData();
       } else {
         document.body.classList.remove("overflow-hidden");
       }
@@ -84,7 +84,7 @@ export default {
     }
   },
   mounted() {
-    this.loadUserData(); // Load data saat komponen pertama kali dipasang
+    this.loadUserData();
   }
 };
 </script>

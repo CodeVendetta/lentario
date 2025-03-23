@@ -94,7 +94,7 @@
   </template>
   
   <script>
-  import axios from 'axios';
+  import { apiUser } from '@/api.js';
   
   export default {
       data() {
@@ -138,14 +138,12 @@
                       return;
                   }
   
-                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/user/barang", {
+                  const response = await apiUser.get("/barang", {
                       headers: {
                           "Authorization": `Bearer ${token}`,
                           "Content-Type": "application/json"
                       }
                   });
-  
-                  console.log("Response dari API:", response.data);
   
                   if (response.status === 200) {
                       this.items = Array.isArray(response.data) ? response.data : response.data.data || [];

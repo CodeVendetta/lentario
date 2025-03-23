@@ -128,7 +128,7 @@
   </template>
   
   <script>
-  import axios from "axios";
+  import { apiAdmin } from '@/api.js';
   
   export default {
       data() {
@@ -177,7 +177,7 @@
                       return;
                   }
   
-                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/admin/ruang-dipinjam", {
+                  const response = await apiAdmin.get("/ruang-dipinjam", {
                       headers: {
                           Authorization: `Bearer ${token}`,
                           Accept: "application/json",
@@ -253,9 +253,9 @@
 
                 try {
                     if (nama === "Menunggu Persetujuan") {
-                        url = `https://laravel-production-ea67.up.railway.app/api/admin/approve-reject-peminjaman-ruang/${id}`;
+                        url = `/approve-reject-peminjaman-ruang/${id}`;
                     } else {
-                        url = `https://laravel-production-ea67.up.railway.app/api/admin/approve-return-ruang/${id}`;
+                        url = `/approve-return-ruang/${id}`;
                     }
 
                     if (!url) {
@@ -263,10 +263,9 @@
                         return;
                     }
 
-                    const response = await axios.put(url, requestBody, { headers });
+                    const response = await apiAdmin.put(url, requestBody, { headers });
 
                     alert("Status berhasil diperbarui!");
-                    console.log("Response:", response.data);
                     location.reload();
                 } catch (error) {
                     console.error("Error:", error);

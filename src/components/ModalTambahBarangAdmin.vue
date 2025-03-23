@@ -64,7 +64,7 @@
   
   <script>
   import { ref, onMounted } from 'vue';
-  import axios from 'axios';
+  import { apiAdmin } from '@/api.js';
   
   export default {
     props: { isOpen: Boolean },
@@ -85,7 +85,7 @@
             console.error("Token tidak ditemukan. Harap login kembali.");
             return;
           }
-          const response = await axios.get('https://laravel-production-ea67.up.railway.app/api/admin/status', {
+          const response = await apiAdmin.get('/status', {
             headers: { Authorization: `Bearer ${token}` }
           });
           statusOptions.value = response.data.status_barang;
@@ -120,7 +120,7 @@
         }
         try {
           const token = localStorage.getItem("token");
-          await axios.post("https://laravel-production-ea67.up.railway.app/api/admin/barang/store", formData, {
+          await apiAdmin.post("/barang/store", formData, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",

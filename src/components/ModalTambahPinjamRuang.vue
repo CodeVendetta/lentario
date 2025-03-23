@@ -57,7 +57,7 @@
 <script>
 import { ref } from 'vue';
 import { validateForm } from '@/utils/validation';
-import axios from 'axios';
+import { apiUser } from '@/api.js';
 
 export default {
 props: {
@@ -75,8 +75,7 @@ methods: {
   async fetchRooms() {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        "https://laravel-production-ea67.up.railway.app/api/user/ruang",
+      const response = await apiUser.get("/ruang",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -117,21 +116,18 @@ setup(props, { emit }) {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        "https://laravel-production-ea67.up.railway.app/api/user/pinjam-ruang",
+      const response = await apiUser.post("/pinjam-ruang", formData,
         {
-          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formData),
+          }
         }
       );
 
-      const data = await response.json();
+      const data = response.data;
 
-      if (!response.ok) {
+      if (!response.status === 200) {
         message.value = data.message || "Terjadi kesalahan!";
         messageType.value = "error";
         return;

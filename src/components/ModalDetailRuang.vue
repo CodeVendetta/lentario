@@ -15,6 +15,9 @@
 </template>
 
 <script>
+import { apiUser } from '@/api.js';
+import { apiAdmin } from '@/api.js';
+
 export default {
   props: {
     isOpen: Boolean,
@@ -37,6 +40,7 @@ export default {
       try {
         const token = localStorage.getItem("token");
         const role = localStorage.getItem("role");
+        const headers = token ? { Authorization: `Bearer ${token}`} : {};
   
         if (!token) {
             console.error("Token tidak ditemukan. Silakan login.");
@@ -44,22 +48,14 @@ export default {
         }
 
         if (role == 'user') {
-          const response = await fetch(`https://laravel-production-ea67.up.railway.app/api/user/ruang/${this.item}`,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json",
-            },
-          });
-          const data = await response.json();
+          const response = await apiUser.get(`/ruang/${this.item}`,{headers});
+          
+          const data = response.data;
           this.imageUrl = data.data.foto || null;
         } else if (role == 'admin') {
-          const response = await fetch(`https://laravel-production-ea67.up.railway.app/api/admin/ruang/${this.item}`,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json",
-            },
-          });
-          const data = await response.json();
+          const response = await apiAdmin.get(`/ruang/${this.item}`,{headers});
+          
+          const data = response.data;
           this.imageUrl = data.data.foto || null;
         }
       } catch (error) {

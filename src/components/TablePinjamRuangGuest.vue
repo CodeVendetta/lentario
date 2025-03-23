@@ -129,7 +129,7 @@
   </template>
   
   <script>
-  import axios from 'axios';
+  import { apiUser } from '@/api.js';
   import ModalTambahData from "./ModalTambahPinjamRuang.vue";
   import ModalDetailRuang from "./ModalDetailRuang.vue";
 
@@ -185,14 +185,12 @@
                     return;
                 }
 
-                const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/user/history/ruang", {
+                const response = await apiUser.get("/history/ruang", {
                     headers: {
                         "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json"
                     }
                 });
-
-                console.log("Response dari API:", response.data);
 
                 if (response.status === 200) {
                     this.items = Array.isArray(response.data) ? response.data : response.data.data || [];
@@ -210,8 +208,7 @@
 
             try {
                 const token = localStorage.getItem("token");
-                await axios.put(
-                    `https://laravel-production-ea67.up.railway.app/api/user/pinjam-ruang/${id}/request-return`,
+                await apiUser.put(`/pinjam-ruang/${id}/request-return`,
                     {},
                     {
                         headers: {

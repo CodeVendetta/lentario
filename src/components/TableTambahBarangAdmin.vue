@@ -102,7 +102,7 @@
   </template>
   
   <script>
-  import axios from "axios";
+  import { apiAdmin } from '@/api.js';
   import ModalTambahData from "./ModalTambahBarangAdmin.vue";
   import ModalDetailBarang from "./ModalDetailBarang.vue";
 
@@ -158,7 +158,7 @@
                       return;
                   }
   
-                  const response = await axios.get("https://laravel-production-ea67.up.railway.app/api/admin/barang", {
+                  const response = await apiAdmin.get("/barang", {
                       headers: {
                           Authorization: `Bearer ${token}`,
                           Accept: "application/json",

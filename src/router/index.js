@@ -63,9 +63,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token') || config.tokenUser || config.tokenAdmin;
   const userRole = localStorage.getItem('role');
-  const user = localStorage.getItem('user');
-
-  console.log(`Navigating to: ${to.path}, Role: ${userRole}, User: ${user}`);
 
   if (to.meta.requiresAuth && !token) {
     alert('Anda harus login terlebih dahulu!');
